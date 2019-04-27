@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- 전체 뷰 공통 head-->
+<head th:insert="fragments/header :: head">
+    layout.html# header
+</head>
+
+<body class="bg-light">
+    <!-- 전체 뷰 공통 nav -->
+    <nav th:insert="fragments/header :: nav"></nav>
+
+    <div class="nav-scroller bg-white shadow-sm" layout:fragment="sub_header">
+        <h1>layout.html# sub_header</h1>
+    </div>
+
+    <div layout:fragment="content">
+        <h1>layout.html# content</h1>
+    </div>
+
+    <!-- 전체 뷰 공통 footer -->
+    <footer th:insert="fragments/footer :: footer">
+        layout.html# footer
+    </footer>
+</body>
+
+</html>
