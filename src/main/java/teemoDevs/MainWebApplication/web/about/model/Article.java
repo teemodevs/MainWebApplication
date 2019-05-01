@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +17,13 @@ public class Article {
     private Long id;
 
     private String subject;
-    private String contents;
+
+    @ElementCollection // Primitive Type Collection 저장 시
+    private List<String> contents = new ArrayList<>();
+
+    public void addContent(String content) {
+        this.contents.add(content);
+    }
 
     /**
      * @JoinColumn의 name 값은 현재 클래스가 DB ROW에 저장될 때, 상대 클래스에 대한 외래키 값을 포함하는 컬럼명

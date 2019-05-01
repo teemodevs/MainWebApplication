@@ -4,3 +4,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+
+  resources:
+    chain:
+      cache: false # static content caching disable
