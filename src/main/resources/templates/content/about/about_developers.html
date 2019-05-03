@@ -13,7 +13,7 @@
 <div layout:fragment="content">
     <main role="main" class="container">
         <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-            <img class="mr-3" th:src="@{/img/teemo/beemo.jpg}" alt="" width="48" height="48">
+            <img class="mr-3" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
             <div class="lh-100">
                 <h6 class="mb-0 text-white lh-100">TeemoDevs Developers</h6>
                 <small>Since 2019</small>
@@ -28,7 +28,7 @@
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0">developer nickname</h6>
                 <div class="media text-muted pt-3">
-                    <img th:src="@{/img/developers/} + ${developer.imageURI}" width="300px" height="300px"/>
+                    <img th:src="@{/resources/img/developers/} + ${developer.imageURI}" width="300px" height="300px"/>
                 </div>
 
                 <th:block th:each="article : ${developer.articleList}">
