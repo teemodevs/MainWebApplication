@@ -12,9 +12,21 @@ spring:
     chain:
       cache: false # static content caching disable
 
-  security:
-    oauth2:
-      client:
-        client-id: foo
-        client-secret: bar
+security:
+  oauth2:
+    client:
+      client-id: foo
+      client-secret: bar
+      access-token-uri: http://localhost:8082/oauth/token
 
+      # Authorization Server's Login Form
+      user-authorization-uri: http://localhost:8082/oauth/authorize
+
+      client-authentication-scheme: form
+    #sso:
+      #login-path: /login
+    resource:
+      token-info-uri: http://localhost:8082/tokeninfo
+      user-info-uri: http://localhost:8082/userinfo
+      token-type: Bearer
+      prefer-token-info: false
