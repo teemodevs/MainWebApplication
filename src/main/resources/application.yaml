@@ -11,3 +11,10 @@ spring:
   resources:
     chain:
       cache: false # static content caching disable
+
+  security:
+    oauth2:
+      client:
+        client-id: foo
+        client-secret: bar
+
