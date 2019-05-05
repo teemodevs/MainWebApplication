@@ -1,39 +1,30 @@
 server:
   port: 8080
+  servlet:
+    context-path: /client
+
+security:
+  basic:
+    enabled: false
 
 spring:
   security:
     oauth2:
       client:
-
-        provider:
-          teemo:
-            # 사용자 인증
-            authorizationUri: http://localhost:8082/oauth/authorize
-
-            # 토큰발급받기
-            tokenUri: http://localhost:8082/oauth/token
-            userInfoUri: http://localhost:8081/me
-            #userInfoAuthenticationMethod: header
-
         registration:
           teemo:
             clientId: foo
             clientSecret: bar
-            provider: teemo
             authorizationGrantType: authorization_code
-            #redirectUri: http://localhost:8080/login/callback
-            #redirectUri: http://localhost:8080/login/oauth2/code
-            redirectUri: http://localhost:8080/oauth2/authorization/teemo
-            #redirectUri: http://localhost:8080/oauth2/authorization
-            #redirectUri: http://localhost:8080/login/oauth2/code/teemo
-            #redirectUri: http://localhost:8080/login/oauth2/client/foo
-
-
-
+            redirectUri: http://localhost:8080/client/login/oauth2/code/teemo
+        provider:
+          teemo:
+            authorizationUri: http://localhost:8082/auth/oauth/authorize
+            tokenUri: http://localhost:8082/auth/oauth/token
+            userInfoUri: http://localhost:8081/resource/me
+            user-name-attribute: name
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
     hibernate:
       ddl-auto: create
