@@ -1,6 +1,8 @@
 server:
   port: 8080
   servlet:
+    # Context Path must be specified.
+    # reason : the session tracking is cookie based and each session cookie must have a unique path
     context-path: /client
 
 security:
@@ -16,18 +18,34 @@ spring:
             clientId: foo
             clientSecret: bar
             authorizationGrantType: authorization_code
+
+            # client_url = "http://localhost:8080/client"
+            # resource_server_url = "http://localhost:8081/resource"
+            # authorization_server_url = "http://localhost:8082/auth"
+            # provider_name = "teemo"
+
+            # redirectUri : <client_url>/login/oauth2/code/<provider_name>  (default)
             redirectUri: http://localhost:8080/client/login/oauth2/code/teemo
+
+        # Custom Oauth2 Provider
         provider:
           teemo:
+            # authorizationUri: <authorization_server_url>/oauth/authorize  (default)
             authorizationUri: http://localhost:8082/auth/oauth/authorize
+
+            # tokenUri: <authorization_server_url>/oauth/token  (default)
             tokenUri: http://localhost:8082/auth/oauth/token
+
+            # userInfoUri: <resource_server_url>/me  (default)
             userInfoUri: http://localhost:8081/resource/me
+
             user-name-attribute: name
 
   jpa:
-    show-sql: true
+    database-platform: H2
+    show-sql: TRUE
     hibernate:
-      ddl-auto: create
+      ddl-auto: 'create'
 
   resources:
     chain:
