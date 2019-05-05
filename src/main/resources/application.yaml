@@ -2,6 +2,36 @@ server:
   port: 8080
 
 spring:
+  security:
+    oauth2:
+      client:
+
+        provider:
+          teemo:
+            # 사용자 인증
+            authorizationUri: http://localhost:8082/oauth/authorize
+
+            # 토큰발급받기
+            tokenUri: http://localhost:8082/oauth/token
+            userInfoUri: http://localhost:8081/me
+            #userInfoAuthenticationMethod: header
+
+        registration:
+          teemo:
+            clientId: foo
+            clientSecret: bar
+            provider: teemo
+            authorizationGrantType: authorization_code
+            #redirectUri: http://localhost:8080/login/callback
+            #redirectUri: http://localhost:8080/login/oauth2/code
+            redirectUri: http://localhost:8080/oauth2/authorization/teemo
+            #redirectUri: http://localhost:8080/oauth2/authorization
+            #redirectUri: http://localhost:8080/login/oauth2/code/teemo
+            #redirectUri: http://localhost:8080/login/oauth2/client/foo
+
+
+
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
@@ -11,22 +41,3 @@ spring:
   resources:
     chain:
       cache: false # static content caching disable
-
-security:
-  oauth2:
-    client:
-      client-id: foo
-      client-secret: bar
-      access-token-uri: http://localhost:8082/oauth/token
-
-      # Authorization Server's Login Form
-      user-authorization-uri: http://localhost:8082/oauth/authorize
-
-      client-authentication-scheme: form
-    #sso:
-      #login-path: /login
-    resource:
-      token-info-uri: http://localhost:8082/tokeninfo
-      user-info-uri: http://localhost:8082/userinfo
-      token-type: Bearer
-      prefer-token-info: false

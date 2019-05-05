@@ -3,9 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- 전체 뷰 공통 head-->
-<head th:insert="fragments/header :: head">
+<th:blcok th:insert="fragments/header :: head">
     layout.html# header
-</head>
+</th:blcok>
 
 <body class="bg-light">
     <!-- 전체 뷰 공통 nav -->
@@ -20,9 +20,9 @@
     </div>
 
     <!-- 전체 뷰 공통 footer -->
-    <footer th:insert="fragments/footer :: footer">
+    <th:block th:insert="fragments/footer :: footer">
         layout.html# footer
-    </footer>
+    </th:block>
 </body>
 
 </html>
