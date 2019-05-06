@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:fragment="head">
     <meta charset="utf-8">
@@ -33,10 +34,39 @@
                 </li>
 
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+
+            <!-- if(Principal.isAuthenticated()) -->
+            <div sec:authorize="isAuthenticated()">
+                Text visible only to authenticated users.
+
+                <!-- Principal name -->
+                Authenticated username:
+                <div sec:authentication="name"></div>
+
+                <!-- 로그인한 유저의 Role 출력 -->
+                <div sec:authorize="hasRole('USER')">hasRole('USER')</div>
+                <div sec:authorize="hasRole('ROLE_USER')">hasRole('ROLE_USER')</div>
+                <div sec:authorize="hasRole('ADMIN')">hasRole('ADMIN')</div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')">hasRole('ROLE_ADMIN')</div>
+
+                <div sec:authorize="hasAuthority('USER')">hasAuthority('USER')</div>
+                <div sec:authorize="hasAuthority('ROLE_USER')">hasAuthority('ROLE_USER')</div>
+                <div sec:authorize="hasAuthority('ADMIN')">hasAuthority('ADMIN')</div>
+                <div sec:authorize="hasAuthority('ROLE_ADMIN')">hasAuthority('ROLE_ADMIN')</div>
+
+                <!-- 로그인한 유저의 authorities 출력 -->
+                Authenticated user Authorities:
+                <div sec:authentication="principal.authorities"></div>
+
+                Authenticated user Roles:
+                <!-- 없음 -->
+                <!--<div sec:authentication="principal.roles"></div>-->
+            </div>
+
+            <!-- 인증되지 않은 사용자만 볼 수 있음 -->
+            <div sec:authorize="!isAuthenticated()">Text visible only to
+                unauthenticated users.
+            </div>
         </div>
     </nav>
 </body>
