@@ -54,13 +54,6 @@
                 <div sec:authorize="hasAuthority('ADMIN')">hasAuthority('ADMIN')</div>
                 <div sec:authorize="hasAuthority('ROLE_ADMIN')">hasAuthority('ROLE_ADMIN')</div>
 
-                <!-- 로그인한 유저의 authorities 출력 -->
-                Authenticated user Authorities:
-                <div sec:authentication="principal.authorities"></div>
-
-                Authenticated user Roles:
-                <!-- 없음 -->
-                <!--<div sec:authentication="principal.roles"></div>-->
             </div>
 
             <!-- 인증되지 않은 사용자만 볼 수 있음 -->

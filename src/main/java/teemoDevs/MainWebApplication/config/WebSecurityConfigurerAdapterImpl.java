@@ -1,12 +1,14 @@
 package teemoDevs.MainWebApplication.config;
 
-import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import teemoDevs.MainWebApplication.auth.authorities.AuthoritiesExtractorImpl;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import teemoDevs.MainWebApplication.auth.domain.CustomOAuth2User;
+import teemoDevs.MainWebApplication.auth.domain.CustomOAuth2UserService;
 
 @Configuration
 @EnableOAuth2Client
@@ -19,12 +21,17 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
                 .authorizeRequests()
                 .antMatchers("/", "/home", "/error", "/webjars/**", "/resources/**", "/login**").permitAll()
                 .anyRequest().authenticated()
-                .and().oauth2Login();
+                .and().oauth2Login()
+
+
+                /** add this config**/
+                            .userInfoEndpoint()
+                                    .customUserType(CustomOAuth2User.class, "teemo")
+                                    .userService(this.oauth2UserService());
     }
 
-    @Bean
-    public AuthoritiesExtractor teemoAuthoritiesExtractor() {
-        return new AuthoritiesExtractorImpl();
+    private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
+        return new CustomOAuth2UserService();
     }
 
 }

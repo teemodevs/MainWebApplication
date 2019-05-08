@@ -1,6 +1,5 @@
 package teemoDevs.MainWebApplication.web.git;
 
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,16 +15,6 @@ public class GitController {
 
     @GetMapping("")
     public String git1() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.isAuthenticated());
-        System.out.println(auth.getPrincipal());
-        System.out.println(auth.getDetails());
-        System.out.println(auth.getCredentials());
-        System.out.println(auth.getAuthorities());
-
-        Object authenticationProperty = AuthUtils.getAuthenticationProperty(auth, "principal.attributes['authorities']");
-        System.out.println(authenticationProperty.toString());
-
         return VIEW_PATH + "git1";
     }
 

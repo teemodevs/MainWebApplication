@@ -1,4 +1,4 @@
-package teemoDevs.MainWebApplication.auth.authorities;
+package teemoDevs.MainWebApplication.auth;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AuthoritiesExtractorImpl implements AuthoritiesExtractor {
+public class CustomAuthoritiesExtractor implements AuthoritiesExtractor {
+
     @Override
     public List<GrantedAuthority> extractAuthorities(Map<String, Object> map) {
         return AuthorityUtils.commaSeparatedStringToAuthorityList(asAuthorities(map));
@@ -17,7 +18,8 @@ public class AuthoritiesExtractorImpl implements AuthoritiesExtractor {
 
     private String asAuthorities(Map<String, Object> map) {
         List<String> authorities = new ArrayList<>();
-        List<LinkedHashMap<String, String>> authz = (List<LinkedHashMap<String, String>>) map.get("authorities");
+        List<LinkedHashMap<String, String>> authz =
+                (List<LinkedHashMap<String, String>>) map.get("authorities");
         for (LinkedHashMap<String, String> entry : authz) {
             authorities.add(entry.get("authority"));
         }
