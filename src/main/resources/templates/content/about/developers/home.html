@@ -20,6 +20,11 @@
             </div>
         </div>
 
+        <div class="col-md-6">
+            <a class="btn btn-success" href="#" th:href="@{/about/developers/register}"> Add Developers </a>
+            <a class="btn btn-primary" href="#" th:href="@{/about/developers/edit}" th:classappend="${developerList.empty} ? 'disabled' : ''"> Edit Developers </a>
+        </div>
+
         <!-- th:block : thymeleaf의 기능을 사용하기 위해 선언하는 예비 태그. 실제 태그가 만들어지지는 않는다 -->
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->
         <th:block th:each="developer : ${developerList}">
