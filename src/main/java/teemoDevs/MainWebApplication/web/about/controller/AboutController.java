@@ -22,15 +22,15 @@ public class AboutController {
 
     @GetMapping("")
     public String aboutTeemoDevs() {
-        return VIEW_PATH + "about_teemodevs";
+        return VIEW_PATH + "teemodevs/home";
     }
 
-    @GetMapping("/aboutProjects")
+    @GetMapping("/projects")
     public String aboutProjects() {
-        return VIEW_PATH + "about_projects";
+        return VIEW_PATH + "projects/home";
     }
 
-    @GetMapping("/aboutDevelopers")
+    @GetMapping("/developers")
     public String aboutDevelopers(Model model) {
         Developer developer1 = new Developer();
         developer1.setName("박예찬");
@@ -100,6 +100,11 @@ public class AboutController {
         List<Developer> developerList = developerService.findAll();
 
         model.addAttribute("developerList", developerList);
-        return VIEW_PATH + "about_developers";
+        return VIEW_PATH + "developers/home";
+    }
+
+    @GetMapping("/developers/register")
+    public String developersRegister() {
+        return VIEW_PATH + "developers/register";
     }
 }

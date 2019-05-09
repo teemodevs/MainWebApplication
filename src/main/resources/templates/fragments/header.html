@@ -37,28 +37,10 @@
 
             <!-- if(Principal.isAuthenticated()) -->
             <div sec:authorize="isAuthenticated()">
-                Text visible only to authenticated users.
-
                 <!-- Principal name -->
                 Authenticated username:
-                <div sec:authentication="name"></div>
-
-                <!-- 로그인한 유저의 Role 출력 -->
-                <div sec:authorize="hasRole('USER')">hasRole('USER')</div>
-                <div sec:authorize="hasRole('ROLE_USER')">hasRole('ROLE_USER')</div>
-                <div sec:authorize="hasRole('ADMIN')">hasRole('ADMIN')</div>
-                <div sec:authorize="hasRole('ROLE_ADMIN')">hasRole('ROLE_ADMIN')</div>
-
-                <div sec:authorize="hasAuthority('USER')">hasAuthority('USER')</div>
-                <div sec:authorize="hasAuthority('ROLE_USER')">hasAuthority('ROLE_USER')</div>
-                <div sec:authorize="hasAuthority('ADMIN')">hasAuthority('ADMIN')</div>
-                <div sec:authorize="hasAuthority('ROLE_ADMIN')">hasAuthority('ROLE_ADMIN')</div>
-
-            </div>
-
-            <!-- 인증되지 않은 사용자만 볼 수 있음 -->
-            <div sec:authorize="!isAuthenticated()">Text visible only to
-                unauthenticated users.
+                <span sec:authentication="name"></span>
+                <span sec:authorize="hasAuthority('ADMIN')">(ADMIN)</span>
             </div>
         </div>
     </nav>
