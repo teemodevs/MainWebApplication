@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layouts/layout}">
 
 <head>
@@ -20,10 +21,9 @@
             </div>
         </div>
 
-        <div class="col-md-6">
-            <a class="btn btn-success" href="#" th:href="@{/about/developers/register}"> Add Developers </a>
-            <a class="btn btn-primary" href="#" th:href="@{/about/developers/edit}" th:classappend="${developerList.empty} ? 'disabled' : ''"> Edit Developers </a>
-        </div>
+        <span sec:authorize="hasAuthority('ADMIN')">
+            <a class="btn btn-success" href="#"> Add Developers </a>
+        </span>
 
         <!-- th:block : thymeleaf의 기능을 사용하기 위해 선언하는 예비 태그. 실제 태그가 만들어지지는 않는다 -->
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->
@@ -32,6 +32,9 @@
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0">developer nickname</h6>
+                <span sec:authorize="hasAuthority('ADMIN')">
+                    <a class="btn btn-primary" href="#"> Edit</a>
+                </span>
                 <div class="media text-muted pt-3">
                     <img th:src="@{/resources/img/developers/} + ${developer.imageURI}" width="300px" height="300px"/>
                 </div>

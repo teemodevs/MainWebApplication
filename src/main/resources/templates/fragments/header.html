@@ -41,6 +41,11 @@
                 Authenticated username:
                 <span sec:authentication="name"></span>
                 <span sec:authorize="hasAuthority('ADMIN')">(ADMIN)</span>
+                <a id="logoutButton" class="btn btn-success" href="#" th:href="@{/logout}"> Logout </a>
+            </div>
+
+            <div sec:authorize="!isAuthenticated()">
+                <a class="btn btn-success" href="#" th:href="@{/oauth2/authorization/teemo}"> Login </a>
             </div>
         </div>
     </nav>

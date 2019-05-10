@@ -23,12 +23,15 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/error", "/webjars/**", "/resources/**", "/login**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2Login()
                             .userInfoEndpoint()
                                     .customUserType(CustomOAuth2User.class, "teemo")
                                     .userService(oAuth2UserService);
+
+        http
+                .logout().logoutSuccessUrl("http://localhost:8082/auth/logout");
     }
 
 }
