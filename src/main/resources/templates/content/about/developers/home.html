@@ -190,11 +190,7 @@
                  // Article 하나에 대한 Content 라인 추가
                  function addArticleContent(article) {
                     let articleContentContainer = document.createElement('div');
-                    articleContentContainer.classList.add('articleContentContainer');
-
-                    let articleContent = document.createElement('span');
-                    articleContent.classList.add('d-block', 'articleContent');
-                    articleContent.innerHTML = '아티클 라인';
+                    articleContentContainer.classList.add('articleContentContainer', 'media', 'mb-1');
 
                     let removeArticleContentButton = document.createElement('button');
                     removeArticleContentButton.type = 'button';
@@ -203,9 +199,13 @@
                     removeArticleContentButton.onclick = function() {
                         remove(articleContentContainer);
                     }
-
                     articleContentContainer.appendChild(removeArticleContentButton);
+
+                    let articleContent = document.createElement('span');
+                    articleContent.classList.add('d-block', 'articleContent');
+                    articleContent.innerHTML = '아티클 라인';
                     articleContentContainer.appendChild(articleContent);
+
                     article.appendChild(articleContentContainer);
 
                  }
