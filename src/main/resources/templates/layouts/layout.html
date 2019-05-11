@@ -9,7 +9,7 @@
 
 <body class="bg-light">
     <!-- 전체 뷰 공통 nav -->
-    <nav th:insert="fragments/header :: nav"></nav>
+    <th:block th:insert="fragments/header :: nav"></th:block>
 
     <div class="nav-scroller bg-white shadow-sm" layout:fragment="sub_header">
         <h1>layout.html# sub_header</h1>
