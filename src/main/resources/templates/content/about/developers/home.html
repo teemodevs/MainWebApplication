@@ -5,7 +5,7 @@
       layout:decorate="~{layouts/layout}">
 
 <head>
-    <title>Developer Register Page</title>
+    <title>Developer Main Page</title>
 </head>
 
 <body>
@@ -21,41 +21,201 @@
             </div>
         </div>
 
-        <span sec:authorize="hasAuthority('ADMIN')">
-            <a class="btn btn-success" href="#"> Add Developers </a>
-        </span>
-
+        <th:block sec:authorize="hasAuthority('ADMIN')">
+            <button onclick="createDeveloper()" class="btn btn-success">추가</button>
+            <div id="developerContainer"></div>
+        </th:block>
         <!-- th:block : thymeleaf의 기능을 사용하기 위해 선언하는 예비 태그. 실제 태그가 만들어지지는 않는다 -->
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->
         <th:block th:each="developer : ${developerList}">
-            <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <!-- 개발자 입력 폼 -->
+            <div class="my-3 p-3 bg-white rounded shadow-sm developerForm">
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
+                <!-- 개발자 이름 헤더 -->
                 <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0">developer nickname</h6>
-                <span sec:authorize="hasAuthority('ADMIN')">
-                    <a class="btn btn-primary" href="#"> Edit</a>
-                </span>
+                <th:block sec:authorize="hasAuthority('ADMIN')">
+                    <!-- 개발자 정보 수정 버튼 -->
+                    <a class="btn btn-primary" href="#">수정</a>
+
+                    <!-- 개발자 정보 삭제 버튼 -->
+                    <a class="btn btn-primary" href="#">삭제</a>
+                </th:block>
+                <!-- TODO : 이미지 정보 추가 -->
                 <div class="media text-muted pt-3">
                     <img th:src="@{/resources/img/developers/} + ${developer.imageURI}" width="300px" height="300px"/>
                 </div>
 
-                <th:block th:each="article : ${developer.articleList}">
-                    <div class="media text-muted pt-3">
-                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
-                            <rect width="100%" height="100%" fill="#007bff"/>
-                        </svg>
-                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                            <div class="d-flex justify-content-between align-items-center w-100">
-                                <strong th:text="${article.subject}" class="text-gray-dark"></strong>
+                <!-- 아티클 폼을 추가할 DIV -->
+                <div class="articleContainerContainer">
+                    <th:block sec:authorize="hasAuthority('ADMIN')">
+                        <!-- 아티클 추가 버튼 -->
+                        <a class="btn btn-primary" href="#" onclick="addArticle(this.parent)">추가</a>
+
+                        <!-- 아티클 삭제 버튼 -->
+                        <a class="btn btn-primary" href="#" onclick="remove(this)">삭제</a>
+                    </th:block>
+
+                    <th:block th:each="article : ${developer.articleList}">
+                        <!-- 아티클 폼 -->
+                        <div class="media text-muted pt-3 articleContainer">
+                            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
+                                <rect width="100%" height="100%" fill="#007bff"/>
+                            </svg>
+                            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
+                                <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
+                                    <strong th:text="${article.subject}" class="text-gray-dark articleSubjectText"></strong>
+                                </div>
+                                <th:block sec:authorize="hasAuthority('ADMIN')">
+                                    <!-- 아티클 컨텐츠 추가 버튼 -->
+                                    <a class="btn btn-primary" href="#" onclick="addArticleContent(this.parentNode)">추가</a>
+
+                                    <!-- 아티클 컨텐츠 삭제 버튼 -->
+                                    <a class="btn btn-primary" href="#" onclick="removeArticleContent(this)">삭제</a>
+                                </th:block>
+                                <div class="articleContentContainer">
+                                    <th:block th:each="content : ${article.contents}">
+                                        <span th:text="${content}" class="d-block articleContent"></span>
+                                    </th:block>
+                                </div>
                             </div>
-                            <th:block th:each="content : ${article.contents}">
-                                <span th:text="${content}" class="d-block"></span>
-                            </th:block>
                         </div>
-                    </div>
-                </th:block>
+                    </th:block>
+                </div>
             </div>
         </th:block>
+
+        <th:block sec:authorize="hasAuthority('ADMIN')">
+            <script>
+                // 개발자 입력 폼 추가
+                function createDeveloper() {
+                    // 개발자 입력 폼
+                    let developer = document.createElement('div');
+                    developer.classList.add('my-3', 'p-3', 'bg-white', 'rounded', 'shadow-sm', 'developer');
+
+                    // 개발자 입력 폼 삭제 버튼
+                    let removeDeveloperButton = document.createElement('button');
+                    removeDeveloperButton.type = 'button';
+                    removeDeveloperButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                    removeDeveloperButton.innerHTML = '-';
+                    removeDeveloperButton.onclick = function() {
+                        remove(developer);
+                    }
+                    developer.appendChild(removeDeveloperButton);
+
+                    // 개발자 닉네임 헤더
+                    let h6 = document.createElement('h6');
+                    h6.classList.add('border-bottom', 'border-gray', 'pb-2', 'mb-0');
+                    h6.innerHTML = '개발자 닉네임';
+                    developer.appendChild(h6);
+
+                    let addArticleButton = document.createElement('button');
+                    addArticleButton.type = 'button';
+                    addArticleButton.classList.add('btn', 'btn-primary', 'btn-sm');
+                    addArticleButton.innerHTML = '+';
+                    addArticleButton.onclick = function() {
+                        addArticle(articleContainerContainer);
+                    }
+                    h6.appendChild(addArticleButton);
+
+                    /* TODO : 이미지 정보 추가 */
+                    // ...
+
+                    // 아티클 컨테이너를 포함하는 컨테이너
+                    let articleContainerContainer = document.createElement('div');
+                    articleContainerContainer.classList.add('articleContainerContainer');
+                    developer.appendChild(articleContainerContainer);
+
+                    // 개발자 입력 폼을 추가할 DIV
+                    let developerContainer = document.getElementById('developerContainer');
+                    developerContainer.appendChild(developer);
+
+                }
+
+                // 상위 개발자 폼에 있는 articleContainerContainer Article 추가
+                function addArticle(articleContainerContainer) {
+                    let articleContainer = document.createElement('div');
+                    articleContainer.classList.add('media', 'text-muted', 'pt-3', 'articleContainer');
+
+                    let removeArticleButton = document.createElement('button');
+                    removeArticleButton.type = 'button';
+                    removeArticleButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                    removeArticleButton.innerHTML = '-';
+                    removeArticleButton.onclick = function() {
+                        remove(articleContainer);
+                        remove(this);
+                    }
+                    articleContainer.appendChild(removeArticleButton);
+
+                    let svg = document.createElement('svg');
+                    svg.classList.add('bd-placeholder-img', 'mr-2', 'rounded');
+                    svg.width = 32;
+                    svg.height = 32;
+                    articleContainer.appendChild(svg);
+
+                    let rect = document.createElement('rect');
+                    rect.width = '100%';
+                    rect.height = '100%';
+                    rect.fill = '#007bff';
+                    svg.appendChild(rect);
+
+
+                    let article = document.createElement('div');
+                    article.classList.add('media-body', 'pb-3', 'mb-0', 'small', 'lh-125', 'border-bottom', 'border-gray', 'article');
+                    articleContainer.appendChild(article);
+
+
+                    let articleSubject = document.createElement('div');
+                    articleSubject.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'w-100', 'articleSubject');
+                    article.appendChild(articleSubject);
+
+                    let articleSubjectText = document.createElement('strong');
+                    articleSubjectText.classList.add('text-gray-dark', 'articleSubjectText');
+                    articleSubjectText.innerHTML = '아티클 제목';
+                    articleSubject.appendChild(articleSubjectText);
+
+                    let addArticleContentButton = document.createElement('button');
+                    addArticleContentButton.classList.add('btn', 'btn-primary', 'btn-sm');
+                    addArticleContentButton.innerHTML = '+';
+                    addArticleContentButton.onclick = function() {
+                        addArticleContent(article);
+                    };
+                    articleSubject.appendChild(addArticleContentButton);
+
+                    articleContainer.appendChild(article);
+
+                    articleContainerContainer.appendChild(articleContainer);
+                 }
+
+                 // Article 하나에 대한 Content 라인 추가
+                 function addArticleContent(article) {
+                    let articleContentContainer = document.createElement('div');
+
+                    let articleContent = document.createElement('span');
+                    articleContent.classList.add('d-block', 'articleContent');
+                    articleContent.innerHTML = '아티클 라인';
+
+                    let removeArticleContentButton = document.createElement('button');
+                    removeArticleContentButton.type = 'button';
+                    removeArticleContentButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                    removeArticleContentButton.innerHTML = '-';
+                    removeArticleContentButton.onclick = function() {
+                        remove(articleContentContainer);
+                    }
+
+                    articleContentContainer.appendChild(removeArticleContentButton);
+                    articleContentContainer.appendChild(articleContent);
+                    article.appendChild(articleContentContainer);
+
+                 }
+
+                // 엘리먼트 삭제
+                function remove(element) {
+                    $(element).remove();
+                }
+            </script>
+        </th:block>
+
     </main>
 </div>
 </body>
