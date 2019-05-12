@@ -87,6 +87,72 @@
 
         <th:block sec:authorize="hasAuthority('ADMIN')">
             <script>
+                // ES6 Class Definition
+                class Developer {
+                    // 생성자 : 클래스 프로퍼티의 선언과 초기화
+                    constructor() {
+                        this.name;
+                        this.nickname;
+                        this.imageURI;
+                        this.articleList = [];
+                    }
+
+                    get getName() {
+                        return this.name;
+                    }
+
+                    set setName(name) {
+                        this.name = name;
+                    }
+
+                    get getNickname() {
+                        return this.nickname;
+                    }
+
+                    set setNickname(nickname) {
+                        this.nickname = nickname;
+                    }
+
+                    get getImageURI() {
+                        return this.imageURI;
+                    }
+
+                    set setImageURI(imageURI) {
+                        this.imageURI = imageURI;
+                    }
+
+                    get getArticleList() {
+                        return this.articleList;
+                    }
+
+                    addArticleList(article) {
+                        this.articleList.push(article);
+                    }
+                }
+
+                class Article {
+                    constructor() {
+                        this.subject;
+                        this.contents = [];
+                    }
+
+                    get getSubject() {
+                        return this.subject;
+                    }
+
+                    set setSubject(subject) {
+                        this.subject = subject;
+                    }
+
+                    get getContents() {
+                        return this.contents;
+                    }
+
+                    addContent(content) {
+                        this.contents.push(content);
+                    }
+                }
+
                 // 개발자 입력 폼 추가
                 function createDeveloper() {
                     // 개발자 입력 폼
@@ -213,6 +279,11 @@
                 // 엘리먼트 삭제
                 function remove(element) {
                     $(element).remove();
+                }
+
+                // 개발자 1명 저장
+                function saveDeveloper() {
+
                 }
             </script>
         </th:block>
