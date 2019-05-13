@@ -22,6 +22,7 @@
         </div>
 
         <th:block sec:authorize="hasAuthority('ADMIN')">
+            <button onclick="save()" class="btn btn-success">저장</button>
             <button onclick="createDeveloper()" class="btn btn-success">추가</button>
             <div id="developerContainer"></div>
         </th:block>
@@ -29,33 +30,21 @@
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->
         <th:block th:each="developer : ${developerList}">
             <!-- 개발자 입력 폼 -->
-            <div class="my-3 p-3 bg-white rounded shadow-sm developerForm">
+            <div class="my-3 p-3 bg-white rounded shadow-sm developer">
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <!-- 개발자 이름 헤더 -->
-                <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0">developer nickname</h6>
-                <th:block sec:authorize="hasAuthority('ADMIN')">
-                    <!-- 개발자 정보 수정 버튼 -->
-                    <a class="btn btn-primary" href="#">수정</a>
-
-                    <!-- 개발자 정보 삭제 버튼 -->
-                    <a class="btn btn-primary" href="#">삭제</a>
-                </th:block>
+                <div class="developerHeader">
+                    <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0 developerNickname">developer nickname</h6>
+                    <h6 th:text="(${developer.name})" class="border-bottom border-gray pb-2 mb-0 developerName">developer name</h6>
+                </div>
                 <!-- TODO : 이미지 정보 추가 -->
                 <div class="media text-muted pt-3">
-                    <img th:src="@{/resources/img/developers/} + ${developer.imageURI}" width="300px" height="300px"/>
+                    <img th:src="@{/resources/img/developers/} + ${developer.imageURI != null ? developer.imageURI : 'default.png'}" width="300px" height="300px" class="developerImageURI"/>
                 </div>
 
                 <!-- 아티클 폼을 추가할 DIV -->
                 <div class="articleContainerContainer">
-                    <th:block sec:authorize="hasAuthority('ADMIN')">
-                        <!-- 아티클 추가 버튼 -->
-                        <a class="btn btn-primary" href="#" onclick="addArticle(this.parent)">추가</a>
-
-                        <!-- 아티클 삭제 버튼 -->
-                        <a class="btn btn-primary" href="#" onclick="remove(this)">삭제</a>
-                    </th:block>
-
                     <th:block th:each="article : ${developer.articleList}">
                         <!-- 아티클 폼 -->
                         <div class="media text-muted pt-3 articleContainer">
@@ -66,13 +55,6 @@
                                 <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
                                     <strong th:text="${article.subject}" class="text-gray-dark articleSubjectText"></strong>
                                 </div>
-                                <th:block sec:authorize="hasAuthority('ADMIN')">
-                                    <!-- 아티클 컨텐츠 추가 버튼 -->
-                                    <a class="btn btn-primary" href="#" onclick="addArticleContent(this.parentNode)">추가</a>
-
-                                    <!-- 아티클 컨텐츠 삭제 버튼 -->
-                                    <a class="btn btn-primary" href="#" onclick="removeArticleContent(this)">삭제</a>
-                                </th:block>
                                 <div class="articleContentContainer">
                                     <th:block th:each="content : ${article.contents}">
                                         <span th:text="${content}" class="d-block articleContent"></span>
@@ -97,35 +79,35 @@
                         this.articleList = [];
                     }
 
-                    get getName() {
+                    getName() {
                         return this.name;
                     }
 
-                    set setName(name) {
+                    setName(name) {
                         this.name = name;
                     }
 
-                    get getNickname() {
+                    getNickname() {
                         return this.nickname;
                     }
 
-                    set setNickname(nickname) {
+                    setNickname(nickname) {
                         this.nickname = nickname;
                     }
 
-                    get getImageURI() {
+                    getImageURI() {
                         return this.imageURI;
                     }
 
-                    set setImageURI(imageURI) {
+                    setImageURI(imageURI) {
                         this.imageURI = imageURI;
                     }
 
-                    get getArticleList() {
+                    getArticleList() {
                         return this.articleList;
                     }
 
-                    addArticleList(article) {
+                    addArticle(article) {
                         this.articleList.push(article);
                     }
                 }
@@ -136,15 +118,15 @@
                         this.contents = [];
                     }
 
-                    get getSubject() {
+                    getSubject() {
                         return this.subject;
                     }
 
-                    set setSubject(subject) {
+                    setSubject(subject) {
                         this.subject = subject;
                     }
 
-                    get getContents() {
+                    getContents() {
                         return this.contents;
                     }
 
@@ -159,7 +141,7 @@
                     let developer = document.createElement('div');
                     developer.classList.add('my-3', 'p-3', 'bg-white', 'rounded', 'shadow-sm', 'developer');
 
-                    // 개발자 입력 폼 삭제 버튼
+                    // 개발자 삭제 버튼
                     let removeDeveloperButton = document.createElement('button');
                     removeDeveloperButton.type = 'button';
                     removeDeveloperButton.classList.add('btn', 'btn-danger', 'btn-xs');
@@ -169,11 +151,21 @@
                     }
                     developer.appendChild(removeDeveloperButton);
 
+                    let developerHeader = document.createElement('div');
+                    developerHeader.classList.add('developerHeader');
+                    developer.appendChild(developerHeader);
+
                     // 개발자 닉네임 헤더
-                    let h6 = document.createElement('h6');
-                    h6.classList.add('border-bottom', 'border-gray', 'pb-2', 'mb-0');
-                    h6.innerHTML = '개발자 닉네임';
-                    developer.appendChild(h6);
+                    let developerNickname = document.createElement('h6');
+                    developerNickname.classList.add('border-bottom', 'border-gray', 'pb-2', 'mb-0', 'developerNickname');
+                    developerNickname.innerHTML = '개발자 닉네임';
+                    developerHeader.appendChild(developerNickname);
+
+                    // 개발자 이름 헤더
+                    let developerName = document.createElement('h6');
+                    developerName.classList.add('border-bottom', 'border-gray', 'pb-2', 'mb-0', 'developerName');
+                    developerName.innerHTML = '(개발자 네임)';
+                    developerHeader.appendChild(developerName);
 
                     let addArticleButton = document.createElement('button');
                     addArticleButton.type = 'button';
@@ -182,7 +174,7 @@
                     addArticleButton.onclick = function() {
                         addArticle(articleContainerContainer);
                     }
-                    h6.appendChild(addArticleButton);
+                    developerHeader.appendChild(addArticleButton);
 
                     /* TODO : 이미지 정보 추가 */
                     // ...
@@ -281,8 +273,51 @@
                     $(element).remove();
                 }
 
-                // 개발자 1명 저장
-                function saveDeveloper() {
+                // 개발자 전체 저장
+                function save() {
+                    let developerList = [];
+
+                    // 모든 developers 클래스의 태그
+                    let developers = document.getElementsByClassName('developer');
+                    Array.from(developers).forEach((developerClassTag) => {
+                        let developer = new Developer();
+                        developer.setNickname(developerClassTag.getElementsByClassName('developerNickname')[0].innerHTML);
+                        developer.setName(developerClassTag.getElementsByClassName('developerName')[0].innerHTML);
+                        developer.setImageURI('default.png');
+
+                        // developer 하나 안에 있는 articleContainers를 구함
+                        let articleContainers = developerClassTag.getElementsByClassName('articleContainer');
+                        Array.from(articleContainers).forEach((articleContainerClassTag) => {
+                            let article = new Article();
+                            article.setSubject(articleContainerClassTag.getElementsByClassName('articleSubjectText')[0].innerHTML);
+
+                            // articleContainer 하나 안에 있는 articleContents를 구함
+                            let articleContents = articleContainerClassTag.getElementsByClassName('articleContent');
+                            Array.from(articleContents).forEach((articleContentClassTag) => {
+                                article.addContent(articleContentClassTag.innerHTML);
+                            });
+
+                            developer.addArticle(article);
+
+                        });
+
+                        developerList.push(developer);
+                    });
+
+                    
+
+                    alert(JSON.stringify(developerList));
+                    /*$.ajax({
+                        url : "/client/about/developers/rest/add",
+                        type: "POST",
+                        data: JSON.stringify(developerList),
+                        contentType: "application/json",
+                        success: function(data) {
+                        },
+                        error : function() {
+                        }
+                    });*/
+
 
                 }
             </script>
