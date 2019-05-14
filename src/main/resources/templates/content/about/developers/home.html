@@ -31,6 +31,7 @@
         <th:block th:each="developer : ${developerList}">
             <!-- 개발자 입력 폼 -->
             <div class="my-3 p-3 bg-white rounded shadow-sm developer">
+                
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <!-- 개발자 이름 헤더 -->
@@ -38,31 +39,30 @@
                     <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0 developerNickname">developer nickname</h6>
                     <h6 th:text="(${developer.name})" class="border-bottom border-gray pb-2 mb-0 developerName">developer name</h6>
                 </div>
+
                 <!-- TODO : 이미지 정보 추가 -->
                 <div class="media text-muted pt-3">
                     <img th:src="@{/resources/img/developers/} + ${developer.imageURI != null ? developer.imageURI : 'default.png'}" width="300px" height="300px" class="developerImageURI"/>
                 </div>
 
                 <!-- 아티클 폼을 추가할 DIV -->
-                <div class="articleContainerContainer">
-                    <th:block th:each="article : ${developer.articleList}">
-                        <!-- 아티클 폼 -->
-                        <div class="media text-muted pt-3 articleContainer">
-                            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
-                                <rect width="100%" height="100%" fill="#007bff"/>
-                            </svg>
-                            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
-                                <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
-                                    <strong th:text="${article.subject}" class="text-gray-dark articleSubjectText"></strong>
-                                </div>
-                                <div class="articleContentContainer">
-                                    <th:block th:each="content : ${article.contents}">
-                                        <span th:text="${content}" class="d-block articleContent"></span>
-                                    </th:block>
-                                </div>
+                <div class="articleContainerContainer" th:each="article : ${developer.articleList}">
+                    <!-- 아티클 폼 -->
+                    <div class="media text-muted pt-3 articleContainer">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
+                            <rect width="100%" height="100%" fill="#007bff"/>
+                        </svg>
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
+                            <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
+                                <strong th:text="${article.subject}" class="text-gray-dark articleSubjectText"></strong>
+                            </div>
+                            <div class="articleContentContainer">
+                                <th:block th:each="content : ${article.contents}">
+                                    <span th:text="${content}" class="d-block articleContent"></span>
+                                </th:block>
                             </div>
                         </div>
-                    </th:block>
+                    </div>
                 </div>
             </div>
         </th:block>
@@ -305,9 +305,7 @@
                     });
 
                     
-
-                    alert(JSON.stringify(developerList));
-                    /*$.ajax({
+                   $.ajax({
                         url : "/client/about/developers/rest/add",
                         type: "POST",
                         data: JSON.stringify(developerList),
@@ -316,7 +314,7 @@
                         },
                         error : function() {
                         }
-                    });*/
+                    });
 
 
                 }

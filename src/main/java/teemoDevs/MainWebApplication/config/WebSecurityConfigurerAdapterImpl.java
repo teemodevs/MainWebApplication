@@ -32,6 +32,10 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
 
         http
                 .logout().logoutSuccessUrl("http://localhost:8082/auth/logout");
+
+        // h2 콘솔 X-Frame-Options in Spring Security 중지
+        http
+                .headers().frameOptions().disable();
     }
 
 }
