@@ -16,8 +16,8 @@ public class DeveloperService {
         developerRepository.save(developer);
     }
 
-    public void delete(Developer developer) {
-        developerRepository.delete(developer);
+    public void deleteAll() {
+        developerRepository.deleteAll();
     }
 
     public List<Developer> findAll() {

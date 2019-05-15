@@ -20,6 +20,7 @@ public class AboutRestController {
 
     @PostMapping("/developers/rest/add")
     public void developersRegisterAPI(@RequestBody List<Developer> developerList) {
+        developerService.deleteAll();
         for (Developer developer : developerList) {
 
             // 이 작업을 해주지 않으면 Article에서 참조하는 Developer_id의 값이 null이 됨
