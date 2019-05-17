@@ -20,311 +20,44 @@
                 <small>Since 2019</small>
             </div>
         </div>
-
         <th:block sec:authorize="hasAuthority('ADMIN')">
-            <button onclick="save()" class="btn btn-success">저장</button>
-            <button onclick="createDeveloper()" class="btn btn-success">추가</button>
-            <div id="developerContainer"></div>
+            <a href="#" th:href="@{/about/developers/add}" class="btn btn-success">추가</button>
         </th:block>
         <!-- th:block : thymeleaf의 기능을 사용하기 위해 선언하는 예비 태그. 실제 태그가 만들어지지는 않는다 -->
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->
         <th:block th:each="developer : ${developerList}">
             <!-- 개발자 입력 폼 -->
             <div class="my-3 p-3 bg-white rounded shadow-sm developer">
-                <button type="button" class="btn btn-danger btn-xs" onclick="remove(this.parentNode)">-</button>
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <!-- 개발자 이름 헤더 -->
                 <div class="developerHeader">
                     <h6 th:text="${developer.nickname}" class="border-bottom border-gray pb-2 mb-0 developerNickname">developer nickname</h6>
                     <h6 th:text="(${developer.name})" class="border-bottom border-gray pb-2 mb-0 developerName">developer name</h6>
-                    <button type="button" class="btn btn-primary btn-xs" onclick="addArticle(this.parentNode.parentNode)">+</button>
                 </div>
-
-                <!-- TODO : 이미지 정보 추가 -->
                 <div class="media text-muted pt-3">
                     <img th:src="@{/resources/img/developers/} + ${developer.imageURI != null ? developer.imageURI : 'default.png'}" width="300px" height="300px" class="developerImageURI"/>
                 </div>
-                <!-- 아티클 폼을 추가할 DIV -->
-                <div class="articleContainerContainer">
-                    <th:block th:each="article : ${developer.articleList}">
-                        <!-- 아티클 폼 -->
-                        <div class="media text-muted pt-3 articleContainer">
-                            <button type="button" class="btn btn-danger btn-xs" onclick="remove(this.parentNode)">-</button>
-                            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
-                                <rect width="100%" height="100%" fill="#007bff"/>
-                            </svg>
-                            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
-                                <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
-                                    <strong th:text="${article.subject}" class="text-gray-dark articleSubjectText"></strong>
-                                    <button type="button" class="btn btn-primary btn-xs" onclick="addArticleContent(this.parentNode.parentNode)">+</button>
-                                </div>
-                                <th:block th:each="content : ${article.contents}">
-                                    <div class="articleContentContainer media mb-1">
-                                        <button type="button" class="btn btn-danger btn-xs" onclick="remove(this.parentNode)">-</button>
-                                        <span th:text="${content}" class="d-block articleContent"></span>    
-                                    </div>
-                                </th:block>
+                <th:block th:each="article : ${developer.articleList}">
+                    <!-- 아티클 폼 -->
+                    <div class="media text-muted pt-3 articleContainer">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
+                            <rect width="100%" height="100%" fill="#007bff"/>
+                        </svg>
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
+                            <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
+                                <strong th:text="${article.subject}" class="text-gray-dark articleSubjectText"></strong>
                             </div>
+                            <th:block th:each="content : ${article.contents}">
+                                <div class="articleContentContainer media mb-1">
+                                    <span th:text="${content}" class="d-block articleContent"></span>    
+                                </div>
+                            </th:block>
                         </div>
-                    </th:block>
-                </div>
+                    </div>
+                </th:block>
             </div>
         </th:block>
-
-        <th:block sec:authorize="hasAuthority('ADMIN')">
-            <script>
-                // ES6 Class Definition
-                class Developer {
-                    // 생성자 : 클래스 프로퍼티의 선언과 초기화
-                    constructor() {
-                        this.name;
-                        this.nickname;
-                        this.imageURI;
-                        this.articleList = [];
-                    }
-
-                    getName() {
-                        return this.name;
-                    }
-
-                    setName(name) {
-                        this.name = name;
-                    }
-
-                    getNickname() {
-                        return this.nickname;
-                    }
-
-                    setNickname(nickname) {
-                        this.nickname = nickname;
-                    }
-
-                    getImageURI() {
-                        return this.imageURI;
-                    }
-
-                    setImageURI(imageURI) {
-                        this.imageURI = imageURI;
-                    }
-
-                    getArticleList() {
-                        return this.articleList;
-                    }
-
-                    addArticle(article) {
-                        this.articleList.push(article);
-                    }
-                }
-
-                class Article {
-                    constructor() {
-                        this.subject;
-                        this.contents = [];
-                    }
-
-                    getSubject() {
-                        return this.subject;
-                    }
-
-                    setSubject(subject) {
-                        this.subject = subject;
-                    }
-
-                    getContents() {
-                        return this.contents;
-                    }
-
-                    addContent(content) {
-                        this.contents.push(content);
-                    }
-                }
-
-                // 개발자 입력 폼 추가
-                function createDeveloper() {
-                    // 개발자 입력 폼
-                    let developer = document.createElement('div');
-                    developer.classList.add('my-3', 'p-3', 'bg-white', 'rounded', 'shadow-sm', 'developer');
-
-                    // 개발자 삭제 버튼
-                    let removeDeveloperButton = document.createElement('button');
-                    removeDeveloperButton.type = 'button';
-                    removeDeveloperButton.classList.add('btn', 'btn-danger', 'btn-xs');
-                    removeDeveloperButton.innerHTML = '-';
-                    removeDeveloperButton.onclick = function() {
-                        remove(developer);
-                    }
-                    developer.appendChild(removeDeveloperButton);
-
-                    let developerHeader = document.createElement('div');
-                    developerHeader.classList.add('developerHeader');
-                    developer.appendChild(developerHeader);
-
-                    // 개발자 닉네임 헤더
-                    let developerNickname = document.createElement('h6');
-                    developerNickname.classList.add('border-bottom', 'border-gray', 'pb-2', 'mb-0', 'developerNickname');
-                    developerNickname.innerHTML = '개발자 닉네임';
-                    developerHeader.appendChild(developerNickname);
-
-                    // 개발자 이름 헤더
-                    let developerName = document.createElement('h6');
-                    developerName.classList.add('border-bottom', 'border-gray', 'pb-2', 'mb-0', 'developerName');
-                    developerName.innerHTML = '(개발자 네임)';
-                    developerHeader.appendChild(developerName);
-
-                    let addArticleButton = document.createElement('button');
-                    addArticleButton.type = 'button';
-                    addArticleButton.classList.add('btn', 'btn-primary', 'btn-xs');
-                    addArticleButton.innerHTML = '+';
-                    addArticleButton.onclick = function() {
-                        addArticle(articleContainerContainer);
-                    }
-                    developerHeader.appendChild(addArticleButton);
-
-                    /* TODO : 이미지 정보 추가 */
-                    // ...
-
-                    // 아티클 컨테이너를 포함하는 컨테이너
-                    let articleContainerContainer = document.createElement('div');
-                    articleContainerContainer.classList.add('articleContainerContainer');
-                    developer.appendChild(articleContainerContainer);
-
-                    // 개발자 입력 폼을 추가할 DIV
-                    let developerContainer = document.getElementById('developerContainer');
-                    developerContainer.appendChild(developer);
-
-                }
-
-                // 상위 개발자 폼에 있는 articleContainerContainer Article 추가
-                function addArticle(articleContainerContainer) {
-                    let articleContainer = document.createElement('div');
-                    articleContainer.classList.add('media', 'text-muted', 'pt-3', 'articleContainer');
-
-                    let removeArticleButton = document.createElement('button');
-                    removeArticleButton.type = 'button';
-                    removeArticleButton.classList.add('btn', 'btn-danger', 'btn-xs');
-                    removeArticleButton.innerHTML = '-';
-                    removeArticleButton.onclick = function() {
-                        remove(articleContainer);
-                    }
-                    articleContainer.appendChild(removeArticleButton);
-
-                    let svg = document.createElement('svg');
-                    svg.classList.add('bd-placeholder-img', 'mr-2', 'rounded');
-                    svg.width = 32;
-                    svg.height = 32;
-                    articleContainer.appendChild(svg);
-
-                    let rect = document.createElement('rect');
-                    rect.width = '100%';
-                    rect.height = '100%';
-                    rect.fill = '#007bff';
-                    svg.appendChild(rect);
-
-
-                    let article = document.createElement('div');
-                    article.classList.add('media-body', 'pb-3', 'mb-0', 'small', 'lh-125', 'border-bottom', 'border-gray', 'article');
-                    articleContainer.appendChild(article);
-
-
-                    let articleSubject = document.createElement('div');
-                    articleSubject.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'w-100', 'articleSubject');
-                    article.appendChild(articleSubject);
-
-                    let articleSubjectText = document.createElement('strong');
-                    articleSubjectText.classList.add('text-gray-dark', 'articleSubjectText');
-                    articleSubjectText.innerHTML = '아티클 제목';
-                    articleSubject.appendChild(articleSubjectText);
-
-                    let addArticleContentButton = document.createElement('button');
-                    addArticleContentButton.classList.add('btn', 'btn-primary', 'btn-xs');
-                    addArticleContentButton.innerHTML = '+';
-                    addArticleContentButton.onclick = function() {
-                        addArticleContent(article);
-                    };
-                    articleSubject.appendChild(addArticleContentButton);
-
-                    articleContainer.appendChild(article);
-
-                    articleContainerContainer.appendChild(articleContainer);
-                 }
-
-                 // Article 하나에 대한 Content 라인 추가
-                 function addArticleContent(article) {
-                    let articleContentContainer = document.createElement('div');
-                    articleContentContainer.classList.add('articleContentContainer', 'media', 'mb-1');
-
-                    let removeArticleContentButton = document.createElement('button');
-                    removeArticleContentButton.type = 'button';
-                    removeArticleContentButton.classList.add('btn', 'btn-danger', 'btn-xs');
-                    removeArticleContentButton.innerHTML = '-';
-                    removeArticleContentButton.onclick = function() {
-                        remove(articleContentContainer);
-                    }
-                    articleContentContainer.appendChild(removeArticleContentButton);
-
-                    let articleContent = document.createElement('span');
-                    articleContent.classList.add('d-block', 'articleContent');
-                    articleContent.innerHTML = '아티클 라인';
-                    articleContentContainer.appendChild(articleContent);
-
-                    article.appendChild(articleContentContainer);
-
-                 }
-
-                // 엘리먼트 삭제
-                function remove(element) {
-                    $(element).remove();
-                }
-
-                // 개발자 전체 저장
-                function save() {
-                    let developerList = [];
-
-                    // 모든 developers 클래스의 태그
-                    let developers = document.getElementsByClassName('developer');
-                    Array.from(developers).forEach((developerClassTag) => {
-                        let developer = new Developer();
-                        developer.setNickname(developerClassTag.getElementsByClassName('developerNickname')[0].innerHTML);
-                        developer.setName(developerClassTag.getElementsByClassName('developerName')[0].innerHTML);
-                        developer.setImageURI('default.png');
-
-                        // developer 하나 안에 있는 articleContainers를 구함
-                        let articleContainers = developerClassTag.getElementsByClassName('articleContainer');
-                        Array.from(articleContainers).forEach((articleContainerClassTag) => {
-                            let article = new Article();
-                            article.setSubject(articleContainerClassTag.getElementsByClassName('articleSubjectText')[0].innerHTML);
-
-                            // articleContainer 하나 안에 있는 articleContents를 구함
-                            let articleContents = articleContainerClassTag.getElementsByClassName('articleContent');
-                            Array.from(articleContents).forEach((articleContentClassTag) => {
-                                article.addContent(articleContentClassTag.innerHTML);
-                            });
-
-                            developer.addArticle(article);
-
-                        });
-
-                        developerList.push(developer);
-                    });
-
-                    
-                   $.ajax({
-                        url : "/client/about/developers/rest/add",
-                        type: "POST",
-                        data: JSON.stringify(developerList),
-                        contentType: "application/json",
-                        success: function(data) {
-                        },
-                        error : function() {
-                        }
-                    });
-
-
-                }
-            </script>
-        </th:block>
-
     </main>
 </div>
 </body>
