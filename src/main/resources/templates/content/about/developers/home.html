@@ -21,7 +21,7 @@
             </div>
         </div>
         <th:block sec:authorize="hasAuthority('ADMIN')">
-            <a href="#" th:href="@{/about/developers/add}" class="btn btn-success">추가</button>
+            <a href="#" th:href="@{/about/developers/add}" class="btn btn-success">추가</a>
         </th:block>
         <!-- th:block : thymeleaf의 기능을 사용하기 위해 선언하는 예비 태그. 실제 태그가 만들어지지는 않는다 -->
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->

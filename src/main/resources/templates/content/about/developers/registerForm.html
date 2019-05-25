@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Developer Register Page</title>
+</head>
+
+<body>
+<div layout:fragment="sub_header" th:insert="fragments/sub_header/about_sub_header :: sub_header"></div>
+
+<div layout:fragment="content">
+    <main role="main" class="container">
+        <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+            <img class="mr-3" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
+            <div class="lh-100">
+                <h6 class="mb-0 text-white lh-100">TeemoDevs Developers</h6>
+                <small>Since 2019</small>
+            </div>
+        </div>
+        <form action="#" th:action="@{/about/developers/add}" th:object="${developer}" method="post" enctype="multipart/form-data">
+            <input type="button" class="btn btn-primary" th:value="저장" onclick="submitA(this.parentNode)">
+            <!-- 개발자 입력 폼 -->
+            <div class="my-3 p-3 bg-white rounded shadow-sm developer">
+                <h6 class="border-bottom border-gray pb-2 mb-0 developerNickname">developer nickname :
+                    <!-- developer.nickname -->
+                    <input type="text" th:field="*{nickname}"/>
+                </h6>
+
+                <h6 class="border-bottom border-gray pb-2 mb-0 developerName">developer name :
+                    <!-- developer.name -->
+                    <input type="text" th:field="*{name}"/>
+                </h6>
+
+                <div class="media text-muted pt-3">
+                    <!-- developer.productImage -->
+                    <input type="file" th:field="*{productImage}" />
+                </div>
+
+                <button type="button" class="btn btn-success btn-xs" onclick="addArticle()">+</button>
+                <div id="articleContainerContainer">
+                <!-- 아티클 폼 -->
+                <!--
+                    <div class="media text-muted pt-3 articleContainer">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
+                            <rect width="100%" height="100%" fill="#007bff"/>
+                        </svg>
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
+                            <button class="btn btn-success" type="button">+</button>
+
+                            <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
+                                제목 : <input class="articleSubjectInput" type="text" name="articleList[0].subject">
+                            </div>
+                            <div class="articleContentContainer media mb-1">
+                                내용 : <input class="articleContentInput" type="text" name="articleList[0].contents[0]">
+                            </div>
+                            <div class="articleContentContainer media mb-1">
+                                내용 : <input class="articleContentInput" type="text" name="articleList[0].contents[1]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="media text-muted pt-3 articleContainer">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32">
+                            <rect width="100%" height="100%" fill="#007bff"/>
+                        </svg>
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray article">
+                            <button class="btn btn-success" type="button">+</button>
+
+                            <div class="d-flex justify-content-between align-items-center w-100 articleSubject">
+                                제목 : <input class="articleSubjectInput" type="text" name="articleList[1].subject">
+                            </div>
+                            <div class="articleContentContainer media mb-1">
+                                내용 : <input class="articleContentInput" type="text" name="articleList[1].contents[0]">
+                            </div>
+                            <div class="articleContentContainer media mb-1">
+                                내용 : <input class="articleContentInput" type="text" name="articleList[1].contents[1]">
+                            </div>
+                        </div>
+                    </div>
+                -->
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        function addArticle() {
+            let articleContainerContainer = document.getElementById('articleContainerContainer');
+            
+            let articleContainer = document.createElement('div');
+            articleContainer.classList.add('articleContainer', 'media', 'text-muted', 'pt-3');
+            articleContainerContainer.appendChild(articleContainer);
+
+            let svg = document.createElement('svg');
+            svg.classList.add('bd-placeholder-img', 'mr-2', 'rounded');
+            svg.width = 32;
+            svg.height = 32;
+            articleContainer.appendChild(svg);
+
+            let rect = document.createElement('rect');
+            rect.width = '100%';
+            rect.height = '100%';
+            rect.fill = '#007bff';
+            svg.appendChild(rect);
+
+            let article = document.createElement('div');
+            article.classList.add('article', 'media-body', 'pb-3', 'mb-0', 'small', 'lh-125', 'border-bottom', 'border-gray');
+            articleContainer.appendChild(article);
+
+            let articleContentAddButton = document.createElement('button');
+            articleContentAddButton.classList.add('btn', 'btn-success');
+            articleContentAddButton.innerHTML = "+";
+            articleContentAddButton.type = 'button';
+            articleContentAddButton.onclick = function() {
+                addArticleContent(article);
+            };
+            article.appendChild(articleContentAddButton);
+
+            let articleSubject = document.createElement('div');
+            articleSubject.classList.add('articleSubject', 'd-flex', 'justify-content-between', 'align-items-center', 'w-100', 'media');
+            articleSubject.innerHTML = "제목 : ";
+            article.appendChild(articleSubject);
+
+            let articleSubjectInput = document.createElement('input');
+            articleSubjectInput.classList.add('articleSubjectInput');
+            articleSubjectInput.type = 'text';
+            articleSubject.appendChild(articleSubjectInput);
+        }
+
+        function addArticleContent(article) {
+            let articleContentContainer = document.createElement('div');
+            articleContentContainer.classList.add('articleContentContainer', 'media', 'mb-1');
+            articleContentContainer.innerHTML = "내용 : ";
+            article.appendChild(articleContentContainer);
+
+            let articleContentInput = document.createElement('input');
+            articleContentInput.classList.add('articleContentInput');
+            articleContentInput.type = 'text';
+            articleContentContainer.appendChild(articleContentInput);
+
+        }
+
+        function submitA(form) {
+            let articleContainerList = document.getElementsByClassName('articleContainer');
+
+            Array.from(articleContainerList).forEach(function(articleContainer, articleIndex) {
+                let article = articleContainer.getElementsByClassName('article')[0];
+
+                // developer.articleList[articleIndex].subject;
+                let articleSubjectInput = article.getElementsByClassName('articleSubjectInput')[0];
+                articleSubjectInput.name = `articleList[${articleIndex}].subject`;
+
+                let articleContentInputList = article.getElementsByClassName('articleContentInput');
+
+                Array.from(articleContentInputList).forEach(function(articleContentInput, contentIndex) {
+                    // developer.articleList[articleIndex].content[contentIndex];
+                    articleContentInput.name = `articleList[${articleIndex}].contents[${contentIndex}]`;
+                });
+            });
+            
+            form.submit();
+        }
+    </script>
+</div>
+</body>
+</html>
