@@ -44,7 +44,7 @@ public class AboutController {
 
     @GetMapping("/developers/add")
     public String addDevelopers(Model model) {
-        // 객체를 만들어서 넘겨주지 않고 thymeleaf에서 th:each를 사용하려고 하면
+        // 객체를 만들어서 넘겨주지 않고 thymeleaf에서 th:object 내의 th:field를 선언하면
         // org.thymeleaf.spring5.processor.SpringInputGeneralFieldTagProcessor 이 발생
         Developer developer = new Developer();
         model.addAttribute("developer", developer);
