@@ -28,6 +28,9 @@
         <th:block th:each="developer : ${developerList}">
             <!-- 개발자 입력 폼 -->
             <div class="my-3 p-3 bg-white rounded shadow-sm developer">
+                <th:block sec:authorize="hasAuthority('ADMIN')">
+                        <a href="#" class="btn btn-danger" th:onclick="'javascript:deleteDeveloper(' + ${developer.id} + ');'">삭제</a>
+                </th:block>
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <!-- 개발자 이름 헤더 -->
@@ -59,6 +62,20 @@
             </div>
         </th:block>
     </main>
+
+    <th:block sec:authorize="hasAuthority('ADMIN')">
+        <script>
+            function deleteDeveloper(developerId) {
+                $.ajax({
+                    url : '/client/about/developers/delete/' + developerId,
+                    type : 'DELETE',
+                    success : function() {
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+    </th:block>
 </div>
 </body>
 </html>
