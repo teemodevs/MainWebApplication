@@ -2,6 +2,7 @@ package teemoDevs.MainWebApplication.web.about.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class Developer {
     private String nickname; // 닉네임
     private String name;     // 이름(실명)
     private String imageURI; // 이미지 URI
+
+    @Transient // db에 저장하지 않는다.
+    private MultipartFile productImage;
 
     /**
      * mappedBy의 값은 상대 클래스에서 참조하는 현재 클래스의 변수명과 같아야 함

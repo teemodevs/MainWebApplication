@@ -20,6 +20,10 @@ public class DeveloperService {
         developerRepository.deleteAll();
     }
 
+    public void deleteById(Long id) {
+        developerRepository.deleteById(id);
+    }
+
     public List<Developer> findAll() {
         return developerRepository.findAll();
     }
