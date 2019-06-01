@@ -11,6 +11,7 @@
     <div layout:fragment="sub_header" th:insert="fragments/sub_header/about_sub_header :: sub_header"></div>
 
     <div layout:fragment="content">
+        <link th:rel="stylesheet" th:href="@{/resources/css/oauth2provider.css}"/>
         <main role="main" class="container">
             <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
                 <img class="mr-3" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
@@ -183,7 +184,122 @@
                         </div>
                         <span class="d-block">
                             티모 데브스의 OAuth2 Authentication Server.<br/>
-                            티모 데브스에 회원가입, 로그인, 비밀번호 찾기, 계정 권한 정보 제공 등 계정과 관련된 책임을 담당한다.
+                            티모 데브스에 회원가입, 로그인, 비밀번호 찾기, 계정 권한 정보 제공 등 계정과 관련된 책임을 담당한다.<br/>
+                            - 지원 로그인 목록 - <br/>
+                            <div class="kpx_login">
+                                <div class="row kpx_row-sm-offset-3 kpx_socialButtons">
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
+                                            <i class="fa fa-facebook fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
+                                            <i class="fa fa-twitter fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-google-plus" data-toggle="tooltip" data-placement="top" title="Google Plus">
+                                            <i class="fa fa-google-plus fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="row kpx_row-sm-offset-3 kpx_socialButtons">
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-github" data-toggle="tooltip" data-placement="top" title="GitHub">
+                                            <i class="fa fa-github fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-soundcloud" data-toggle="tooltip" data-placement="top" title="SoundCloud">
+                                            <i class="fa fa-soundcloud fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-steam" data-toggle="tooltip" data-placement="top" title="Steam">
+                                            <i class="fa fa-steam fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="row kpx_row-sm-offset-3 kpx_socialButtons">
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-pinterest" data-toggle="tooltip" data-placement="top" title="Pinterest">
+                                            <i class="fa fa-pinterest fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-vimeo" data-toggle="tooltip" data-placement="top" title="Vimeo">
+                                            <i class="fa fa-vimeo-square fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-lastfm" data-toggle="tooltip" data-placement="top" title="Lastfm">
+                                            <i class="fa fa-lastfm fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="row kpx_row-sm-offset-3 kpx_socialButtons">
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-yahoo" data-toggle="tooltip" data-placement="top" title="Yahoo">
+                                            <i class="fa fa-yahoo fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-vk" data-toggle="tooltip" data-placement="top" title="VKontakte">
+                                            <i class="fa fa-vk fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-spotify" data-toggle="tooltip" data-placement="top" title="Spotify">
+                                            <i class="fa fa-spotify fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="row kpx_row-sm-offset-3 kpx_socialButtons">
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-linkedin" data-toggle="tooltip" data-placement="top" title="LinkedIn">
+                                            <i class="fa fa-linkedin fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-stumbleupon" data-toggle="tooltip" data-placement="top" title="Stumble Upon">
+                                            <i class="fa fa-stumbleupon fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2">
+                                        <a href="#" class="btn btn-lg btn-block kpx_btn-tumblr" data-toggle="tooltip" data-placement="top" title="Tumblr">
+                                            <i class="fa fa-tumblr fa-2x"></i>
+                                            <span class="hidden-xs"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </span>
                     </div>
                 </div>
