@@ -1,0 +1,27 @@
+spring:
+  profiles: production
+
+  security:
+    oauth2:
+      client:
+        registration:
+          teemo:
+            # client_url = "http://localhost:8080/client"
+            # resource_server_url = "http://localhost:8081/resource"
+            # authorization_server_url = "http://localhost:8082/auth"
+            # provider_name = "teemo"
+
+            # redirectUri : <client_url>/login/oauth2/code/<provider_name>  (default)
+            redirectUri: http://mainwebapplication.herokuapp.com:8080/client/login/oauth2/code/teemo
+
+        # Custom Oauth2 Provider
+        provider:
+          teemo:
+            # authorizationUri: <authorization_server_url>/oauth/authorize  (default)
+            authorizationUri: http://oauth2authorizationserver.herokuapp.com:8082/auth/oauth/authorize
+
+            # tokenUri: <authorization_server_url>/oauth/token  (default)
+            tokenUri: http://oauth2authorizationserver.herokuapp.com:8082/auth/oauth/token
+
+            # userInfoUri: <resource_server_url>/me  (default)
+            userInfoUri: http://oauth2resourceserver.herokuapp.com:8081/resource/me
