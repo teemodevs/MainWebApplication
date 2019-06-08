@@ -21,6 +21,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // Resource Server의 /me를 호출한 결과를 바탕으로 OAuth2User를 만듦. (Default : DefaultOAuth2User)
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         List<GrantedAuthority> grantedAuthorityList = authoritiesExtractor.extractAuthorities(oAuth2User.getAttributes());

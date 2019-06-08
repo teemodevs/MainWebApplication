@@ -27,8 +27,8 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
                 .anyRequest().authenticated()
                 .and().oauth2Login()
                             .userInfoEndpoint()
-                                    .customUserType(CustomOAuth2User.class, "teemo")
-                                    .userService(oAuth2UserService);
+                                    .customUserType(CustomOAuth2User.class, "teemo") // Default : OAuth2User
+                                    .userService(oAuth2UserService); // Default : DefaultOAuth2UserService
 
         http
                 .logout().logoutSuccessUrl("http://localhost:8082/auth/logout");
