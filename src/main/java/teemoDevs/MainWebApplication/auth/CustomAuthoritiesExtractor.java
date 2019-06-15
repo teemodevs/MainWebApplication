@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 커스터마이징 AuthoritiesExtractor
+ * {@link AuthoritiesExtractor}를 구현
  * Resource Server의 userInfoUri로 부터 받은 JSON 포맷의 'authorities'를 파싱하여 권한을 추출하여 리턴
  * */
 @Component
