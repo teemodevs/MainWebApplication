@@ -11,14 +11,23 @@ import org.springframework.stereotype.Service;
 import teemoDevs.MainWebApplication.auth.domain.CustomOAuth2User;
 
 import java.util.List;
-
+/**
+ * 커스터마이징 OAuth2UserService
+ *
+ * */
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    // CustomAuthoritiesExtractor를 @Component로 등록해야 함
+    /**
+     * Resource Server의 userInfoUri로 부터 받은 JSON 포맷을 파싱하여 권한을 추출
+     * CustomAuthoritiesExtractor를 @Component로 등록해야 함
+     * */
     @Autowired
     private AuthoritiesExtractor authoritiesExtractor;
 
+    /**
+     * Resource Server의 userInfoUri로 부터 받은 JSON 포맷의 'authentication'을 파싱하여 CustomOAuth2User 객체로 바인딩 후 리턴
+     * */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // Resource Server의 /me를 호출한 결과를 바탕으로 OAuth2User를 만듦. (Default : DefaultOAuth2User)
