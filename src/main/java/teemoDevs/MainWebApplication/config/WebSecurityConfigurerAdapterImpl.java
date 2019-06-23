@@ -25,6 +25,7 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
+                /** {@link org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer} 설정 **/
                 .and().oauth2Login()
                             .userInfoEndpoint()
                                     .customUserType(CustomOAuth2User.class, "teemo") // Default : OAuth2User
