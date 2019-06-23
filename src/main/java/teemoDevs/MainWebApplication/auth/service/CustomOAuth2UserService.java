@@ -43,15 +43,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         System.out.println("OAuth2User.toString() : " + oAuth2User.toString());
         System.out.println("OAuth2User.getName() : " + oAuth2User.getName());
-        System.out.println("OAuth2User.getAttributes() : " + oAuth2User.getAttributes());
+        System.out.println("OAuth2User.getAttributes() : " + oAuth2User.getAttributes()); // Resource 서버에서 보낸 정보가 포함됨
         System.out.println("OAuth2User.getAuthorities() : " + oAuth2User.getAuthorities());
 
-
         List<GrantedAuthority> grantedAuthorityList = authoritiesExtractor.extractAuthorities(oAuth2User.getAttributes());
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(grantedAuthorityList, oAuth2User.getAttributes());
-        customOAuth2User.setName(oAuth2User.getName());
 
-        return customOAuth2User;
+        return new CustomOAuth2User(grantedAuthorityList, oAuth2User.getAttributes());
     }
 }
 

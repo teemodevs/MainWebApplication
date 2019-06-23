@@ -21,6 +21,16 @@ spring:
       enabled: true
       path: /h2-console
 
+  jpa:
+    database-platform: H2
+    show-sql: TRUE
+    hibernate:
+      ddl-auto: 'create'
+
+  resources:
+    chain:
+      cache: false # static content caching disable
+
   security:
     oauth2:
       client:
@@ -51,13 +61,3 @@ spring:
             userInfoUri: http://localhost:8081/resource/me
 
             user-name-attribute: name
-
-  jpa:
-    database-platform: H2
-    show-sql: TRUE
-    hibernate:
-      ddl-auto: 'create'
-
-  resources:
-    chain:
-      cache: false # static content caching disable
