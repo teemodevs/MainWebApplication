@@ -1,6 +1,7 @@
 package teemoDevs.MainWebApplication.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,6 +14,9 @@ import teemoDevs.MainWebApplication.auth.domain.CustomOAuth2User;
 @Configuration
 @EnableOAuth2Client
 public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapter {
+
+    @Value("${spring.security.oauth2.client.provider.teemo.logoutSuccessUrl}")
+    private String logoutSuccessUrl;
 
     // CustomAuth2UserService를 @Component로 등록해야 함
     @Autowired
@@ -32,7 +36,7 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
                                     .userService(oAuth2UserService); // Default : DefaultOAuth2UserService
 
         http
-                .logout().logoutSuccessUrl("http://localhost:8082/auth/logout");
+                .logout().logoutSuccessUrl(logoutSuccessUrl);
 
         // h2 콘솔 X-Frame-Options in Spring Security 중지
         http

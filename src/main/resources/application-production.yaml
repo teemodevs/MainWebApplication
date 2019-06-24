@@ -28,3 +28,6 @@ spring:
 
             # userInfoUri: <resource_server_url>/me  (default)
             userInfoUri: http://oauth2resourceserver.herokuapp.com/resource/me
+
+            # custom property
+            logoutSuccessUrl: http://oauth2authorizationserver.herokuapp.com/auth/logout

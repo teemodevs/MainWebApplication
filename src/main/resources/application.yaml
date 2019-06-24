@@ -61,3 +61,6 @@ spring:
             userInfoUri: http://localhost:8081/resource/me
 
             user-name-attribute: name
+
+            # custom property
+            logoutSuccessUrl: http://localhost:8082/auth/logout
