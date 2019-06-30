@@ -11,6 +11,11 @@
     <link th:rel="stylesheet" th:href="@{/resources/css/offcanvas.css}"/>
 
     <link th:rel="stylesheet" th:href="@{/resources/css/headerCss.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.4.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/js/offcanvas.js}"></script>
+
 </head>
 
 <body>
@@ -32,6 +37,9 @@
                     <a class="nav-link" th:href="@{/git}">Git</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" th:href="@{/community}">Community</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{/about}">About</a>
                 </li>
 
@@ -39,7 +47,7 @@
 
             <div sec:authorize="isAuthenticated()">
                 <!-- Principal name -->
-                Authenticated username:
+                username:
                 <span sec:authentication="name"></span>
 
                 <!--
@@ -54,7 +62,7 @@
                     6. 따라서 SecurityContextHolder의 Authentication에는 CustomOAuth2User 타입에 대한 내용이 들어있다.
                     7. 밑의 내용을 자바코드로 치면 ((CustomOAuth2User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail()와 같다.
                 -->
-                Authenticated email:
+                email:
                 <span sec:authentication="principal.email"></span>
                 <span sec:authorize="hasAuthority('ADMIN')">(ADMIN)</span>
                 <a id="logoutButton" class="btn btn-success" href="#" th:href="@{/logout}"> Logout </a>
