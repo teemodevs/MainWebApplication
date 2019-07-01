@@ -11,23 +11,23 @@ public class GitController {
     private final static String VIEW_PATH = "content/git/";
 
     @GetMapping("")
-    public String git1() {
-        return VIEW_PATH + "git1";
+    public String teemoDevsGit() {
+        return VIEW_PATH + "teemoDevs";
     }
 
-    @GetMapping("/git2")
-    public String git2() {
-        return VIEW_PATH + "git2";
+    @GetMapping("/yechanpark")
+    public String yechanparkGit() {
+        return VIEW_PATH + "yechanpark";
     }
 
-    @GetMapping("/git3")
-    public String git3() {
-        return VIEW_PATH + "git3";
+    @GetMapping("/ehdrylang")
+    public String ehdrylangGit() {
+        return VIEW_PATH + "ehdrylang";
     }
 
-    @GetMapping("/git4")
-    public String git4() {
-        return VIEW_PATH + "git4";
+    @GetMapping("/developer-do")
+    public String developerDoGit() {
+        return VIEW_PATH + "developer_do";
     }
 
 }
