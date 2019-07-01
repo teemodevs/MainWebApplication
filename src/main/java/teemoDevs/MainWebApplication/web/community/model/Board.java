@@ -19,6 +19,7 @@ public class Board {
 
     private String subject; // 제목
 
+    @Column(length = 40000)
     private String content; // 내용
 
     private Date addDate;        // 작성시간
