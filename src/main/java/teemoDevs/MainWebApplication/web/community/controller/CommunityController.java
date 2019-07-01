@@ -1,5 +1,6 @@
 package teemoDevs.MainWebApplication.web.community.controller;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,7 @@ import teemoDevs.MainWebApplication.web.community.model.Board;
 import teemoDevs.MainWebApplication.web.community.model.CustomPageRequest;
 import teemoDevs.MainWebApplication.web.community.service.BoardService;
 
+import java.io.IOException;
 import java.util.Date;
 
 @Controller
@@ -30,14 +32,24 @@ public class CommunityController {
      * */
     @GetMapping("")
     public String communityFreeBoard(Model model, Pageable pageable) {
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+
         CustomPageRequest customPageRequest
                 = new CustomPageRequest()
-                        .setPage(pageable.getPageNumber())
-                        .setSize(pageable.getPageSize())
+                        .setPage(pageNumber)
+                        .setSize(pageSize)
                         .setDirection(Sort.Direction.DESC);
 
         model.addAttribute("boardList", boardService.findAll(customPageRequest.of()));
-        model.addAttribute("boardCount", boardService.count());
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(boardService.findAll(customPageRequest.of()));
+            System.out.println(value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return VIEW_PATH + "freeboard/home";
     }
