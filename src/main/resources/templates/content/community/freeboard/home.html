@@ -25,7 +25,7 @@
             <th:block th:each="board : ${boardList}">
                 <div class="my-3 p-3 bg-white rounded shadow-sm">
                     <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Subject</h6>
-                    <span th:text="${board.content}">Content</span>
+                    <span th:utext="${board.content}">Content</span>
 
                     <th:block th:each="reply : ${board.replyList}">
                         <div class="media text-muted pt-3">

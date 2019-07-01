@@ -12,6 +12,7 @@
 
 <div layout:fragment="content">
 
+    <!-- SummerNote JS / CSS -->
     <link th:rel="stylesheet" th:href="@{/webjars/summernote/0.8.11/dist/summernote-bs4.css}"/>
     <script th:src="@{/webjars/summernote/0.8.11/dist/summernote-bs4.min.js}"></script>
 
@@ -35,7 +36,7 @@
 
                 <h6 class="border-bottom border-gray pb-2 mb-0">Content</h6>
                 <!-- board.content -->
-                <div id="summernote"></div>
+                <textarea id="summernote" th:field="*{content}"></textarea>
             </div>
         </form>
     </main>
