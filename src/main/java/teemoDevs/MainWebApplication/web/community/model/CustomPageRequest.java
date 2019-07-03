@@ -20,7 +20,7 @@ public class CustomPageRequest {
     }
 
     public CustomPageRequest setSize(int size) {
-        int DEFAULT_SIZE = 10;
+        int DEFAULT_SIZE = 5;
         int MAX_SIZE = 50;
 
         this.size = (size > MAX_SIZE) ? DEFAULT_SIZE : size;

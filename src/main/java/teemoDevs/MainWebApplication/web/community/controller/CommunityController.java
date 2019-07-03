@@ -43,6 +43,8 @@ public class CommunityController {
 
         model.addAttribute("boardList", boardService.findAll(customPageRequest.of()));
 
+        // 보여줄 페이징 번호 최대 갯수
+        model.addAttribute("pageBarSize", 5);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String value = objectMapper.writeValueAsString(boardService.findAll(customPageRequest.of()));
