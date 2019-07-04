@@ -1,8 +1,10 @@
 package teemoDevs.MainWebApplication.web.community.controller;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import teemoDevs.MainWebApplication.web.community.model.Board;
 import teemoDevs.MainWebApplication.web.community.model.CustomPageRequest;
 import teemoDevs.MainWebApplication.web.community.service.BoardService;
 
+import java.io.IOException;
 import java.util.Date;
 
 @Controller
@@ -29,15 +32,27 @@ public class CommunityController {
      * 자유게시판
      * */
     @GetMapping("")
-    public String communityFreeBoard(Model model, Pageable pageable) {
+    public String communityFreeBoard(Model model, @PageableDefault(size = 5, page = 1, sort = "addDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+
         CustomPageRequest customPageRequest
                 = new CustomPageRequest()
-                        .setPage(pageable.getPageNumber())
-                        .setSize(pageable.getPageSize())
+                        .setPage(pageNumber)
+                        .setSize(pageSize)
                         .setDirection(Sort.Direction.DESC);
 
         model.addAttribute("boardList", boardService.findAll(customPageRequest.of()));
-        model.addAttribute("boardCount", boardService.count());
+
+        // 보여줄 페이징 번호 최대 갯수
+        model.addAttribute("pageBarSize", 5);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(boardService.findAll(customPageRequest.of()));
+            System.out.println(value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return VIEW_PATH + "freeboard/home";
     }

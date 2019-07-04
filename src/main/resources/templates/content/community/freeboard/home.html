@@ -8,48 +8,99 @@
 </head>
 
 <body>
-    <div layout:fragment="sub_header" th:insert="fragments/sub_header/community_sub_header :: sub_header"></div>
+<div layout:fragment="sub_header" th:insert="fragments/sub_header/community_sub_header :: sub_header"></div>
 
-    <div layout:fragment="content">
-        <main role="main" class="container">
-            <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-                <img class="mr-3" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
-                <div class="lh-100">
-                    <h6 class="mb-0 text-white lh-100">TeemoDevs</h6>
-                    <small>Since 2019</small>
-                </div>
+<div layout:fragment="content">
+    <main role="main" class="container">
+        <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+            <img class="mr-3" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
+            <div class="lh-100">
+                <h6 class="mb-0 text-white lh-100">TeemoDevs</h6>
+                <small>Since 2019</small>
             </div>
+        </div>
 
-            <a href="#" th:href="@{/community/freeBoard/add}" class="btn btn-success">추가</a>
+        <a href="#" th:href="@{/community/freeBoard/add}" class="btn btn-success">추가</a>
 
-            <th:block th:each="board : ${boardList}">
-                <div class="my-3 p-3 bg-white rounded shadow-sm">
-                    <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Subject</h6>
-                    <span th:utext="${board.content}">Content</span>
+        <th:block th:each="board : ${boardList.content}">
+            <div class="my-3 p-3 bg-white rounded shadow-sm">
+                <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Subject</h6>
+                <span th:utext="${board.content}">Content</span>
 
-                    <th:block th:each="reply : ${board.replyList}">
-                        <div class="media text-muted pt-3">
-                            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
-                                 xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                                 role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#007bff"/>
-                                <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                            </svg>
-                            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                                <div class="d-flex justify-content-between align-items-center w-100">
-                                    <strong class="text-gray-dark" th:text="${reply.username}">Full Name</strong>
-                                    <a href="#">댓글달기</a>
-                                </div>
-                                <span class="d-block" th:text="${reply.content}">@username</span>
+                <th:block th:each="reply : ${board.replyList}">
+                    <div class="media text-muted pt-3">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                             role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#007bff"/>
+                            <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                        </svg>
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="text-gray-dark" th:text="${reply.username}">Full Name</strong>
+                                <a href="#">댓글달기</a>
                             </div>
+                            <span class="d-block" th:text="${reply.content}">@username</span>
                         </div>
+                    </div>
+                </th:block>
+                <small class="d-block text-right mt-3">
+                    <a href="#">답글달기</a>
+                </small>
+            </div>
+        </th:block>
+    </main>
+
+    <!-- 비어있지 않은 경우에만 페이징 바 출력 -->
+    <!-- th:if는 조건이 true이면 출력 -->
+    <!-- th:unless는 조건이 true이면 미출력 -->
+    <th:block th:object="${boardList}">
+        <th:block th:unless="*{empty}">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+
+
+                    <!-- startPage : 페이징바 시작 번호 -->
+                    <!-- endPage : 페이징바 끝 번호 -->
+                    <!-- pageBarSize : 페이징바 번호 최대 갯수 -->
+                    <!-- pageable.pageNumber : 현재 페이지 인덱스 번호. page=1인 경우 0리턴 -->
+                    <!-- boardList.totalPages : 총 페이지 갯수 -->
+                    <th:block
+                            th:with="startPage = ${#numbers.formatDecimal(boardList.pageable.pageNumber / pageBarSize * pageBarSize + 1, 0, 0)  }">
+                        <th:block th:with="endPage = (${startPage} + ${pageBarSize} - 1)">
+
+                            <!-- 첫 번째 페이지면 'Previous' 버튼을 비활성화 -->
+                            <li class="page-item" th:classappend="*{first}?disabled">
+                                <!-- 페이징바 시작 번호 - pageBarSize로 이동-->
+                                <a class="page-link" href="#"
+                                   th:href="@{/community?page=__${startPage} - ${pageBarSize}__}" tabindex="-1">Previous</a>
+                            </li>
+
+
+
+                            <!-- Thmeleaf에서 2/3은 Integer 타입이 아니므로, #numbers.formatDecial(number, 0 ,0)을 사용해 정수로 만들어야 함 -->
+                            <!-- endPage가 totalPages보다 큰 경우(맨 끝 페이지 그룹에서 pageBarSize보다 적은 수의 페이지가 남았을 때) totalPages 만큼만 보여줌 -->
+                            <th:block
+                                    th:each="i : ${#numbers.sequence(startPage, boardList.totalPages < endPage ? boardList.totalPages : endPage)}">
+                                <!-- 현재 해당하는 페이지 버튼에 색칠 -->
+                                <li class="page-item" th:classappend="(*{pageable.pageNumber} == (${i} - 1)) ? active">
+                                    <a class="page-link" href="#" th:href="@{/community?page=__${i}__}" th:text="${i}"></a>
+                                </li>
+                            </th:block>
+
+
+                            <!-- 마지막 페이지면 'Next' 버튼을 비활성화-->
+                            <li class="page-item" th:classappend="*{last}?disabled">
+                                <!-- 페이징바 끝 번호 + 1 로 이동-->
+                                <a class="page-link" href="#" th:href="@{/community?page=__${endPage} + 1__}">Next</a>
+                            </li>
+
+                        </th:block>
                     </th:block>
-                    <small class="d-block text-right mt-3">
-                        <a href="#">답글달기</a>
-                    </small>
-                </div>
-            </th:block>
-        </main>
-    </div>
+                </ul>
+            </nav>
+        </th:block>
+    </th:block>
+</div>
 </body>
 </html>

@@ -27,6 +27,7 @@
 
         <form action="#" th:action="@{/community/freeBoard/add}" th:object="${board}" method="post" enctype="multipart/form-data">
             <input type="submit" class="btn btn-primary" th:value="저장">
+            <a href="#" th:href="@{/community}" class="btn btn-secondary">취소</a>
 
             <!-- 글 입력 폼 -->
             <div class="my-3 p-3 bg-white rounded shadow-sm">

@@ -20,10 +20,11 @@ public class CustomPageRequest {
     }
 
     public CustomPageRequest setSize(int size) {
-        int DEFAULT_SIZE = 10;
-        int MAX_SIZE = 50;
+        int DEFAULT_SIZE = 5;   // 기본 사이즈
+        int MAX_SIZE = 10;      // 최대 사이즈
+        int MIN_SIZE = 1;       // 최소 사이즈
 
-        this.size = (size > MAX_SIZE) ? DEFAULT_SIZE : size;
+        this.size = (size > MAX_SIZE) || (size < MIN_SIZE) ? DEFAULT_SIZE : size;
         return this;
     }
 
