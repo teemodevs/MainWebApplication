@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,7 @@ public class CommunityController {
      * 자유게시판
      * */
     @GetMapping("")
-    public String communityFreeBoard(Model model, Pageable pageable) {
+    public String communityFreeBoard(Model model, @PageableDefault(size = 5, page = 1, sort = "addDate", direction = Sort.Direction.DESC) Pageable pageable) {
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
 
