@@ -13,41 +13,57 @@
 <div layout:fragment="content">
     <main role="main" class="container">
         <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-            <img class="mr-3" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
+            <img class="mr-3" src="#" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
             <div class="lh-100">
                 <h6 class="mb-0 text-white lh-100">TeemoDevs</h6>
                 <small>Since 2019</small>
             </div>
         </div>
 
-        <a href="#" th:href="@{/community/freeBoard/add}" class="btn btn-success">추가</a>
+        <a href="#" th:href="@{/community/freeBoard/board/add}" class="btn btn-success">추가</a>
 
         <th:block th:each="board : ${boardList.content}">
-            <div class="my-3 p-3 bg-white rounded shadow-sm">
-                <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Subject</h6>
-                <span th:utext="${board.content}">Content</span>
+            <div class="my-1 p-1 bg-white rounded shadow-sm board">
 
-                <th:block th:each="reply : ${board.replyList}">
-                    <div class="media text-muted pt-3">
-                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                             role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#007bff"/>
-                            <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                        </svg>
-                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                            <div class="d-flex justify-content-between align-items-center w-100">
-                                <strong class="text-gray-dark" th:text="${reply.username}">Full Name</strong>
-                                <a href="#">댓글달기</a>
-                            </div>
-                            <span class="d-block" th:text="${reply.content}">@username</span>
+                <div class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                         role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"></rect>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <div class="media-body pb-3 mb-0 small lh-125 border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark" th:text="${board.author}">Board Author</strong>
                         </div>
                     </div>
-                </th:block>
+                </div>
+
+                <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Board Subject</h6>
+                <span th:utext="${board.content}">Board Content</span>
                 <small class="d-block text-right mt-3">
-                    <a href="#">답글달기</a>
+                    <a href="#" onclick="showReplyInput(this);">댓글 달기</a>
                 </small>
             </div>
+
+            <!-- 해당 게시글 댓글 -->
+            <th:block th:each="reply : ${board.replyList}">
+                <div class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                         role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"></rect>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark" th:text="${reply.author}">Reply Author</strong>
+                            <a href="#">대댓글 달기</a>
+                        </div>
+                        <span class="d-block" th:text="${reply.content}">Reply Content</span>
+                    </div>
+                </div>
+            </th:block>
         </th:block>
     </main>
 
@@ -58,7 +74,6 @@
         <th:block th:unless="*{empty}">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-
 
                     <!-- startPage : 페이징바 시작 번호 -->
                     <!-- endPage : 페이징바 끝 번호 -->
@@ -76,8 +91,6 @@
                                    th:href="@{/community?page=__${startPage} - ${pageBarSize}__}" tabindex="-1">Previous</a>
                             </li>
 
-
-
                             <!-- Thymeleaf에서 2/3은 Integer 타입이 아니므로, #numbers.formatDecial(number, 0 ,0)을 사용해 정수로 만들어야 함 -->
                             <!-- endPage가 totalPages보다 큰 경우(맨 끝 페이지 그룹에서 pageBarSize보다 적은 수의 페이지가 남았을 때) totalPages 만큼만 보여줌 -->
                             <th:block
@@ -87,7 +100,6 @@
                                     <a class="page-link" href="#" th:href="@{/community?page=__${i}__}" th:text="${i}"></a>
                                 </li>
                             </th:block>
-
 
                             <!-- 마지막 페이지면 'Next' 버튼을 비활성화-->
                             <li class="page-item" th:classappend="*{last}?disabled">
@@ -101,6 +113,12 @@
             </nav>
         </th:block>
     </th:block>
+
+    <script>
+        function showReplyInput() {
+
+        }
+    </script>
 </div>
 </body>
 </html>

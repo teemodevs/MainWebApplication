@@ -1,6 +1,5 @@
 package teemoDevs.MainWebApplication.web.community.controller;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,9 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import teemoDevs.MainWebApplication.web.community.model.Board;
 import teemoDevs.MainWebApplication.web.community.model.CustomPageRequest;
+import teemoDevs.MainWebApplication.web.community.model.Reply;
 import teemoDevs.MainWebApplication.web.community.service.BoardService;
 
-import java.io.IOException;
+import java.security.Principal;
 import java.util.Date;
 
 @Controller
@@ -46,21 +46,13 @@ public class CommunityController {
 
         // 보여줄 페이징 번호 최대 갯수
         model.addAttribute("pageBarSize", 5);
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String value = objectMapper.writeValueAsString(boardService.findAll(customPageRequest.of()));
-            System.out.println(value);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return VIEW_PATH + "freeboard/home";
     }
 
     /**
      * 게시판 추가 폼 입력 페이지 이동
      * */
-    @GetMapping("/freeBoard/add")
+    @GetMapping("/freeBoard/board/add")
     public String addBoard(Model model, Authentication authentication) {
 
         if (authentication == null)
@@ -74,9 +66,17 @@ public class CommunityController {
     /**
      * 게시판 추가
      * */
-    @PostMapping("/freeBoard/add")
-    public String addBoardPost(@ModelAttribute Board board) {
+    @PostMapping("/freeBoard/board/add")
+    public String addBoardPost(@ModelAttribute Board board, Principal principal) {
+        Reply reply = new Reply();
+        reply.setBoard(board);
+        reply.setAuthor("sampleUserName");
+        reply.setContent("sampleReplyContent");
+
+        board.getReplyList().add(reply);
         board.setAddDate(new Date());
+        board.setAuthor(principal.getName());
+
         boardService.save(board);
         return "redirect:/community";
     }
