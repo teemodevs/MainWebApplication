@@ -16,6 +16,9 @@ public class AboutRestController {
     @Autowired
     private DeveloperService developerService;
 
+    /**
+     * 개발자 삭제
+     * */
     @DeleteMapping("/developers/delete/{developerId}")
     public ResponseEntity<?> deleteDeveloper(@PathVariable Long developerId) {
         developerService.deleteById(developerId);

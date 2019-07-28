@@ -25,16 +25,29 @@ public class WebSecurityConfigurerAdapterImpl extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                // CSRF 토큰 활용 비활성화
                 .csrf().disable()
+
+                // 모든 URI에 대해 요청을 허용
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
+
+                // 모든 요청은 인가받은 사람만 요청할 수 있음
                 .anyRequest().authenticated()
+
                 /** {@link org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer} 설정 **/
                 .and().oauth2Login()
-                            .userInfoEndpoint()
-                                    .customUserType(CustomOAuth2User.class, "teemo") // Default : OAuth2User
-                                    .userService(oAuth2UserService); // Default : DefaultOAuth2UserService
 
+                            // 유저 정보 엔드포인트 설정
+                            .userInfoEndpoint()
+
+                                    // CustomOAuth2User 클래스를 teemo 클라이언트에 대한 유저 정보 클래스로 사용, Default : OAuth2User
+                                    .customUserType(CustomOAuth2User.class, "teemo")
+
+                                    // CustomOAuth2User 클래스를 얻는 데 사용하는 OAuth2UserService 등록, Default : DefaultOAuth2UserService
+                                    .userService(oAuth2UserService);
+
+        // 로그아웃 URL 설정
         http
                 .logout().logoutSuccessUrl(logoutSuccessUrl);
 

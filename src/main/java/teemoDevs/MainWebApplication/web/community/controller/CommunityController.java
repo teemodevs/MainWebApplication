@@ -57,6 +57,9 @@ public class CommunityController {
         return VIEW_PATH + "freeboard/home";
     }
 
+    /**
+     * 게시판 추가 폼 입력 페이지 이동
+     * */
     @GetMapping("/freeBoard/add")
     public String addBoard(Model model, Authentication authentication) {
 
@@ -68,6 +71,9 @@ public class CommunityController {
         return VIEW_PATH + "freeboard/registerForm";
     }
 
+    /**
+     * 게시판 추가
+     * */
     @PostMapping("/freeBoard/add")
     public String addBoardPost(@ModelAttribute Board board) {
         board.setAddDate(new Date());

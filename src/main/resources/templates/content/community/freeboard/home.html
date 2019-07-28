@@ -78,7 +78,7 @@
 
 
 
-                            <!-- Thmeleaf에서 2/3은 Integer 타입이 아니므로, #numbers.formatDecial(number, 0 ,0)을 사용해 정수로 만들어야 함 -->
+                            <!-- Thymeleaf에서 2/3은 Integer 타입이 아니므로, #numbers.formatDecial(number, 0 ,0)을 사용해 정수로 만들어야 함 -->
                             <!-- endPage가 totalPages보다 큰 경우(맨 끝 페이지 그룹에서 pageBarSize보다 적은 수의 페이지가 남았을 때) totalPages 만큼만 보여줌 -->
                             <th:block
                                     th:each="i : ${#numbers.sequence(startPage, boardList.totalPages < endPage ? boardList.totalPages : endPage)}">

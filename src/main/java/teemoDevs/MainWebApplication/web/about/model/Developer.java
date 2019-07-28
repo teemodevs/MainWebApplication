@@ -32,8 +32,8 @@ public class Developer {
      *      private Developer developer; // 여기의 developer
      * }
      *
-     * CascadeType.PERSIST는 A를 저장할 때, 연관된 B의 리스트를 전부 저장하도록 지정
-     * CascadeType.REMOVE는 A를 삭제할 때, 연관된 B의 리스트를 전부 삭제하도록 지정
+     * {@link CascadeType.PERSIST}는 A를 저장할 때, 연관된 B의 리스트를 전부 저장하도록 지정
+     * {@link CascadeType.REMOVE}는 A를 삭제할 때, 연관된 B의 리스트를 전부 삭제하도록 지정
      * */
     @OneToMany(mappedBy = "developer", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Article> articleList = new ArrayList<>();

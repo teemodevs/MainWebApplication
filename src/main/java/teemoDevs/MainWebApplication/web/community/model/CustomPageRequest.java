@@ -13,7 +13,6 @@ public class CustomPageRequest {
 
     private Sort.Direction direction;
 
-
     public CustomPageRequest setPage(int page) {
         this.page = (page <= 0) ? 1 : page;
         return this;

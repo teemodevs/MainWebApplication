@@ -29,19 +29,22 @@ public class AboutController {
         return VIEW_PATH + "teemodevs/home";
     }
 
-    /** Projects **/
+    /** Projects 홈 **/
     @GetMapping("/projects")
     public String aboutProjects() {
         return VIEW_PATH + "projects/home";
     }
 
-    /** Developers **/
+    /** Developers 홈 **/
     @GetMapping("/developers")
     public String aboutDevelopers(Model model) {
         model.addAttribute("developerList", developerService.findAll());
         return VIEW_PATH + "developers/home";
     }
 
+    /**
+     * 개발자 추가 폼 입력 페이지로 이동
+     * */
     @GetMapping("/developers/add")
     public String addDevelopers(Model model) {
         // 객체를 만들어서 넘겨주지 않고 thymeleaf에서 th:object 내의 th:field를 선언하면
@@ -51,11 +54,14 @@ public class AboutController {
         return VIEW_PATH + "developers/registerForm";
     }
 
+    /**
+     * 개발자 추가
+     * */
     // @RequestBody : multipart/form-data는 json 포맷으로 들어오지 않으므로 사용 불가. @ModelAttribute를 써야 함
     @PostMapping(path = "/developers/add", consumes = {"multipart/form-data"})
     public String addDevelopersPost(@ModelAttribute Developer developer, HttpServletRequest request) {
 
-        /** 이미지 업로드 **/
+        /** 이미지 업로드 시작 **/
         // 실제 파일명(확장자명 포함) : "teemo.jpg"
         String imageFilename = developer.getProductImage().getOriginalFilename();
 
@@ -75,7 +81,7 @@ public class AboutController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /** 이미지 업로드 **/
+        /** 이미지 업로드 끝 **/
 
         developer.setImageURI(imageFilename);
 
