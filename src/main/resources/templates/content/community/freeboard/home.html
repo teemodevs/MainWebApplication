@@ -42,26 +42,34 @@
                 <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Board Subject</h6>
                 <span th:utext="${board.content}">Board Content</span>
                 <small class="d-block text-right mt-3">
-                    <a href="#" onclick="showReplyInput(this);">댓글 달기</a>
+                    <a href="#">댓글 달기</a>
                 </small>
             </div>
 
             <!-- 해당 게시글 댓글 -->
-            <th:block th:each="reply : ${board.replyList}">
-                <div class="media text-muted pt-3">
-                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
-                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                         role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#007bff"></rect>
-                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                    </svg>
-                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                        <div class="d-flex justify-content-between align-items-center w-100">
-                            <strong class="text-gray-dark" th:text="${reply.author}">Reply Author</strong>
-                            <a href="#">대댓글 달기</a>
+            <th:block th:with="replyList = ${board.replyList}, depth = 0">
+                <div th:fragment="subReplyBoard">
+                    <th:block th:each="reply : ${replyList}">
+                        <div class="media text-muted pt-3">
+                            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                                 xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                 focusable="false"
+                                 role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#007bff"></rect>
+                                <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                            </svg>
+
+                            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                                <div class="d-flex justify-content-between align-items-center w-100">
+                                    <strong class="text-gray-dark" th:text="${reply.author}">Reply Author</strong>
+                                    <a href="#">대댓글 달기</a>
+                                </div>
+                                <span class="d-block" th:text="${reply.content}">Reply Content</span>
+                            </div>
                         </div>
-                        <span class="d-block" th:text="${reply.content}">Reply Content</span>
-                    </div>
+                        <div th:with="replyList = ${reply.children}"
+                             th:include="content/community/freeboard/home :: subReplyBoard"></div>
+                    </th:block>
                 </div>
             </th:block>
         </th:block>
@@ -88,7 +96,8 @@
                             <li class="page-item" th:classappend="*{first}?disabled">
                                 <!-- 페이징바 시작 번호 - pageBarSize로 이동-->
                                 <a class="page-link" href="#"
-                                   th:href="@{/community?page=__${startPage} - ${pageBarSize}__}" tabindex="-1">Previous</a>
+                                   th:href="@{/community?page=__${startPage} - ${pageBarSize}__}"
+                                   tabindex="-1">Previous</a>
                             </li>
 
                             <!-- Thymeleaf에서 2/3은 Integer 타입이 아니므로, #numbers.formatDecial(number, 0 ,0)을 사용해 정수로 만들어야 함 -->
@@ -97,7 +106,8 @@
                                     th:each="i : ${#numbers.sequence(startPage, boardList.totalPages < endPage ? boardList.totalPages : endPage)}">
                                 <!-- 현재 해당하는 페이지 버튼에 색칠 -->
                                 <li class="page-item" th:classappend="(*{pageable.pageNumber} == (${i} - 1)) ? active">
-                                    <a class="page-link" href="#" th:href="@{/community?page=__${i}__}" th:text="${i}"></a>
+                                    <a class="page-link" href="#" th:href="@{/community?page=__${i}__}"
+                                       th:text="${i}"></a>
                                 </li>
                             </th:block>
 
@@ -114,11 +124,6 @@
         </th:block>
     </th:block>
 
-    <script>
-        function showReplyInput() {
-
-        }
-    </script>
 </div>
 </body>
 </html>

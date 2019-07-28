@@ -68,12 +68,18 @@ public class CommunityController {
      * */
     @PostMapping("/freeBoard/board/add")
     public String addBoardPost(@ModelAttribute Board board, Principal principal) {
-        Reply reply = new Reply();
-        reply.setBoard(board);
-        reply.setAuthor("sampleUserName");
-        reply.setContent("sampleReplyContent");
+        Reply reply1 = new Reply();
+        reply1.setBoard(board);
+        reply1.setAuthor("sampleUserName");
+        reply1.setContent("sampleReplyContent");
 
-        board.getReplyList().add(reply);
+        Reply reply2 = new Reply();
+        reply2.setParent(reply1);
+        reply2.setAuthor("reply2 author");
+        reply2.setContent("reply2 content");
+        reply1.getChildren().add(reply2);
+
+        board.getReplyList().add(reply1);
         board.setAddDate(new Date());
         board.setAuthor(principal.getName());
 

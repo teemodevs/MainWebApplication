@@ -33,6 +33,13 @@ public class Reply {
     @JsonBackReference
     private Board board;
 
-    // 대댓글 리스트
-    private List<Reply> replyList = new ArrayList<>();
+    // 부모 댓글
+    @ManyToOne
+    @JsonBackReference
+    private Reply parent;
+
+    // 자식 댓글 리스트
+    @OneToMany(mappedBy="parent", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @JsonManagedReference
+    private List<Reply> children = new ArrayList<>();
 }
