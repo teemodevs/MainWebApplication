@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layouts/layout}">
 
 <head>
@@ -33,45 +34,76 @@
                         <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
                     </svg>
                     <div class="media-body pb-3 mb-0 small lh-125 border-gray">
-                        <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="justify-content-between align-items-center w-100">
                             <strong class="text-gray-dark" th:text="${board.author}">Board Author</strong>
+                            <strong class="text-gray-dark" th:text="'(작성시간 : ' + ${board.addDate} + ')'">Board AddDate</strong>
+                            <strong class="text-gray-dark" th:text="'(최종수정시간 : ' + ${board.lastModifyDate} + ')'">Board LastModifyDate</strong>
                         </div>
                     </div>
                 </div>
 
                 <h6 class="border-bottom border-gray pb-2 mb-0" th:text="${board.subject}">Board Subject</h6>
                 <span th:utext="${board.content}">Board Content</span>
-                <small class="d-block text-right mt-3">
-                    <a href="#">댓글 달기</a>
-                </small>
             </div>
 
-            <!-- 해당 게시글 댓글 -->
-            <th:block th:with="replyList = ${board.replyList}, depth = 0">
-                <div th:fragment="subReplyBoard">
+            <!-- 해당 게시글 댓글 출력 -->
+            <th:block th:with="replyList = ${board.replyList}, replyDepth = 0">
+                <!-- 댓글 리스트 -->
+                <div th:fragment="replyBoard">
+                    <!-- 존재하는 댓글을 루프를 돌면서 출력 -->
                     <th:block th:each="reply : ${replyList}">
+                        <!-- 댓글 컨테이너 -->
                         <div class="media text-muted pt-3">
+                            <!-- 자식댓글에 대한 Depth에 따라 공백과 이미지 출력 -->
+                            <th:block th:each="replyDepth, iterator : ${#numbers.sequence(0, replyDepth)}">
+                                <th:block th:if="${replyDepth} > 0">
+                                    <th:block th:if="${iterator.last}">
+                                        <!-- 이미지 중앙 정렬을 쉽게 하기위해 스타일을 부여한 p태그로 래핑 -->
+                                        <p style="text-align: center;">
+                                            <img th:src="@{/resources/img/board/replyDepth.jpg}">
+                                        </p>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+
+                            <!-- 댓글 사진 -->
                             <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
                                  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
                                  focusable="false"
                                  role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title>
                                 <rect width="100%" height="100%" fill="#007bff"></rect>
-                                <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                                <text x="50%" y="50%" fill="#007bff" dy=".3em"></text>
                             </svg>
 
+                            <!-- 댓글 내용 -->
                             <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                                <div class="d-flex justify-content-between align-items-center w-100">
+                                <div class="justify-content-between align-items-center w-100">
                                     <strong class="text-gray-dark" th:text="${reply.author}">Reply Author</strong>
-                                    <a href="#">대댓글 달기</a>
+                                    <strong class="text-gray-dark" th:text="'(작성시간 : ' + ${reply.addDate} + ')'">Board Author</strong>
+                                    <strong class="text-gray-dark" th:text="'(최종수정시간 : ' + ${reply.lastModifyDate} + ')'">Board Author</strong>
                                 </div>
                                 <span class="d-block" th:text="${reply.content}">Reply Content</span>
+                                <!-- 댓글에 대한 댓글 -->
+                                <a href="javascript:;" th:onclick="|addChildReply('${reply.id}');|">댓글에 댓글 달기</a>
                             </div>
                         </div>
-                        <div th:with="replyList = ${reply.children}"
-                             th:include="content/community/freeboard/home :: subReplyBoard"></div>
+
+                        <!-- 자식 댓글을 thymeleaf 의 기능을 사용해 Recursive하게 출력 -->
+                        <div th:with="replyList = ${reply.children}, replyDepth = ${replyDepth} + 1"
+                             th:include="content/community/freeboard/home :: replyBoard"></div>
                     </th:block>
                 </div>
             </th:block>
+
+            <!-- 게시글에 대한 댓글 등록(최상위 부모 댓글) -->
+            <!-- 로그인한 사람만 작성 가능-->
+            <div sec:authorize="isAuthenticated()">
+                <form action="#" th:action="@{/community/freeBoard/reply/add}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="board.id" th:value="${board.id}"/>
+                    <input type="text" name="replyContent" />
+                    <input type="submit" th:value="전송"/>
+                </form>
+            </div>
         </th:block>
     </main>
 
@@ -123,6 +155,14 @@
             </nav>
         </th:block>
     </th:block>
+
+    <script>
+        // 댓글에 대한 대댓글 등록
+        function addChildReply(replyId) {
+            console.log(replyId);
+        }
+
+    </script>
 
 </div>
 </body>

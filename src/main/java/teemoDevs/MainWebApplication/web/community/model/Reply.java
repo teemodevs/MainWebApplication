@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +18,13 @@ public class Reply {
     @Id
     @GeneratedValue
     @Column(name="REPLY_ID")
-    private Long id;
+    private Long id;        // 댓글 id
 
     private String author;  // 작성한 유저 이름
     private String content; // 댓글 내용
+
+    private LocalDateTime addDate;        // 작성시간
+    private LocalDateTime lastModifyDate; // 최종 수정 시간
 
     /**
      * {@link JoinColumn}        : name 값은 현재 클래스가 DB ROW에 저장될 때, 상대 클래스에 대한 외래키 값을 포함하는 컬럼명
@@ -42,4 +47,39 @@ public class Reply {
     @OneToMany(mappedBy="parent", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JsonManagedReference
     private List<Reply> children = new ArrayList<>();
+
+    /**
+     * 최초 생성 시간 설정.
+     * */
+    public Reply setAddDate(LocalDateTime localDateTime) {
+        this.addDate = this.formattedLocalDateTime(localDateTime);
+        this.setLastModifyDate(localDateTime);
+        return this;
+    }
+
+    public String getAddDate() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(this.addDate);
+    }
+
+    /**
+     * 최종 수정 시간 설정. 클래스 외부, 내부 모두 사용됨
+     * */
+    public Reply setLastModifyDate(LocalDateTime localDateTime) {
+        this.lastModifyDate = this.formattedLocalDateTime(localDateTime);
+        return this;
+    }
+
+    public String getLastModifyDate() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(this.lastModifyDate);
+    }
+
+    /**
+     * {@link LocalDateTime}의 포맷을 yyyy-MM-dd HH:mm:ss 형태로 변경
+     * */
+    private LocalDateTime formattedLocalDateTime(LocalDateTime unFormattedLocalDateTime) {
+        return LocalDateTime.parse(
+                unFormattedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                , DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        );
+    }
 }

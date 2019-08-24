@@ -9,18 +9,16 @@ import teemoDevs.MainWebApplication.web.community.repository.BoardRepository;
 
 @Service
 public class BoardService {
+
     @Autowired
     private BoardRepository boardRepository;
 
     public void save(Board board) {
-        boardRepository.save(board);
+        this.boardRepository.save(board);
     }
 
     public Page<Board> findAll(PageRequest pageRequest) {
-        return boardRepository.findAll(pageRequest);
+        return this.boardRepository.findAll(pageRequest);
     }
 
-    public Long count() {
-        return boardRepository.count();
-    }
 }
