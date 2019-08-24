@@ -21,6 +21,8 @@ public class Reply {
     private Long id;        // 댓글 id
 
     private String author;  // 작성한 유저 이름
+
+    @Column(length = 40000)
     private String content; // 댓글 내용
 
     private LocalDateTime addDate;        // 작성시간

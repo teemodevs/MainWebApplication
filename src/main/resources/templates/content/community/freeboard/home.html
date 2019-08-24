@@ -12,6 +12,10 @@
 <div layout:fragment="sub_header" th:insert="fragments/sub_header/community_sub_header :: sub_header"></div>
 
 <div layout:fragment="content">
+    <!-- SummerNote JS / CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/summernote/0.8.11/dist/summernote-bs4.css}"/>
+    <script th:src="@{/webjars/summernote/0.8.11/dist/summernote-bs4.min.js}"></script>
+
     <main role="main" class="container">
         <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
             <img class="mr-3" src="#" th:src="@{/resources/img/teemo/beemo.jpg}" alt="" width="48" height="48">
@@ -82,7 +86,7 @@
                                     <strong class="text-gray-dark" th:text="'(작성시간 : ' + ${reply.addDate} + ')'">Board Author</strong>
                                     <strong class="text-gray-dark" th:text="'(최종수정시간 : ' + ${reply.lastModifyDate} + ')'">Board Author</strong>
                                 </div>
-                                <span class="d-block" th:text="${reply.content}">Reply Content</span>
+                                <span class="d-block" th:utext="${reply.content}">Reply Content</span>
                                 <!-- 댓글에 대한 댓글 -->
                                 <a href="javascript:;" th:onclick="|addChildReply('${reply.id}');|">댓글에 댓글 달기</a>
                             </div>
@@ -100,8 +104,10 @@
             <div sec:authorize="isAuthenticated()">
                 <form action="#" th:action="@{/community/freeBoard/reply/add}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="board.id" th:value="${board.id}"/>
-                    <input type="text" name="replyContent" />
-                    <input type="submit" th:value="전송"/>
+
+                    <!-- 댓글 입력 폼 -->
+                    <textarea class="summernote" name="replyContent"></textarea>
+                    <input type="submit" th:value="등록"/>
                 </form>
             </div>
         </th:block>
@@ -157,11 +163,11 @@
     </th:block>
 
     <script>
-        // 댓글에 대한 대댓글 등록
-        function addChildReply(replyId) {
-            console.log(replyId);
-        }
-
+        $('.summernote').summernote({
+            placeholder: 'Hello bootstrap 4',
+            tabsize: 2,
+            height: 100
+        });
     </script>
 
 </div>

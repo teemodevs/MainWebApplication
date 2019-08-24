@@ -141,13 +141,13 @@ public class CommunityController {
     @PostMapping("/freeBoard/reply/add")
     public String addReplyPost(
             @RequestParam(value = "board.id") Board board,
-            @RequestParam(value = "replyContent") String replyComment,
+            @RequestParam(value = "replyContent") String replyContent,
             Principal principal) {
 
         Reply reply = new Reply();
         reply.setBoard(board);
         reply.setAuthor(principal.getName());
-        reply.setContent(replyComment);
+        reply.setContent(replyContent);
         reply.setAddDate(LocalDateTime.now());
 
         board.getReplyList().add(reply);
