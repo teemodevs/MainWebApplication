@@ -23,7 +23,7 @@ public class Board {
     private String subject; // 제목
     private String author;  // 작성자
 
-    @Column(length = 40000)
+    @Column(length = 100000)
     private String content; // 내용
 
     private LocalDateTime addDate;        // 작성시간
