@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:fragment="head">
+<th:block th:fragment="head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -19,7 +19,7 @@
     <!-- ETC JS / CSS-->
     <script th:src="@{/resources/js/offcanvas.js}"></script>
 
-</head>
+</th:block>
 
 <body>
     <nav th:fragment="nav" class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
