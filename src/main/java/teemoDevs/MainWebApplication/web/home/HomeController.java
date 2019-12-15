@@ -13,18 +13,4 @@ public class HomeController {
         return VIEW_PATH + "home1";
     }
 
-    @GetMapping("/home/home2")
-    public String home2() {
-        return VIEW_PATH + "home2";
-    }
-
-    @GetMapping("/home/home3")
-    public String home3() {
-        return VIEW_PATH + "home3";
-    }
-
-    @GetMapping("/home/home4")
-    public String home4() {
-        return VIEW_PATH + "home4";
-    }
 }

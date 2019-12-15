@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layouts/layout}">
 
 <head>
@@ -20,17 +19,12 @@
                 <small>Since 2019</small>
             </div>
         </div>
-        <th:block sec:authorize="hasAuthority('ADMIN')">
-            <a href="#" th:href="@{/about/developers/add}" class="btn btn-success">추가</a>
-        </th:block>
+
         <!-- th:block : thymeleaf의 기능을 사용하기 위해 선언하는 예비 태그. 실제 태그가 만들어지지는 않는다 -->
         <!-- th:each : 반복문. spring controller부터 전달 받은 developerList 객체를 developer라는 이름으로 접근 -->
         <th:block th:each="developer : ${developerList}">
             <!-- 개발자 입력 폼 -->
             <div class="my-3 p-3 bg-white rounded shadow-sm developer">
-                <th:block sec:authorize="hasAuthority('ADMIN')">
-                        <a href="#" class="btn btn-danger" th:onclick="'javascript:deleteDeveloper(' + ${developer.id} + ');'">삭제</a>
-                </th:block>
                 <!-- thymeleaf에서는 bean 객체의 property 네임을 통해 바로 접근할 수 있음. -->
                 <!-- POJO 스타일을 준수했다면 ${developer.getNickname()} 과 같이 사용하여도 동일한 결과가 출력됨  -->
                 <!-- 개발자 이름 헤더 -->
@@ -63,19 +57,6 @@
         </th:block>
     </main>
 
-    <th:block sec:authorize="hasAuthority('ADMIN')">
-        <script>
-            function deleteDeveloper(developerId) {
-                $.ajax({
-                    url : '/client/about/developers/delete/' + developerId,
-                    type : 'DELETE',
-                    success : function() {
-                        location.reload();
-                    }
-                });
-            }
-        </script>
-    </th:block>
 </div>
 </body>
 </html>
