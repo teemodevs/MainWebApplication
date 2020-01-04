@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+import teemoDevs.MainWebApplication.util.LocalDateTimeFormatter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class Reply {
     @Id
     @GeneratedValue
-    @Column(name="REPLY_ID")
+    @Column(name = "REPLY_ID")
     private Long id;        // 댓글 id
 
     private String author;  // 작성한 유저 이름
@@ -30,13 +30,13 @@ public class Reply {
 
     /**
      * {@link JoinColumn}        : name 값은 현재 클래스가 DB ROW에 저장될 때, 상대 클래스에 대한 외래키 값을 포함하는 컬럼명
-     *                             상대 클래스에 대한 외래키 값을 포함하는 컬럼명이기 때문에 상대 클래스의 정보가 기술되어야 한다.
+     * 상대 클래스에 대한 외래키 값을 포함하는 컬럼명이기 때문에 상대 클래스의 정보가 기술되어야 한다.
      * {@link ManyToOne}         : 현재 클래스(Reply)와 상대 클래스(Baord)가 N:1일 때 선언.
      * {@link JsonBackReference} : JSON Serialize 시 상대 클래스(Board)의 정보를 Serialize 하지 않는다.
-     *                             (참고 : {@link JsonManagedReference} )
-     * */
+     * (참고 : {@link JsonManagedReference} )
+     */
     @ManyToOne
-    @JoinColumn(name="BOARD_ID")
+    @JoinColumn(name = "BOARD_ID")
     @JsonBackReference
     private Board board;
 
@@ -46,42 +46,28 @@ public class Reply {
     private Reply parent;
 
     // 자식 댓글 리스트
-    @OneToMany(mappedBy="parent", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(
+            mappedBy = "parent",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
     @JsonManagedReference
     private List<Reply> children = new ArrayList<>();
 
     /**
      * 최초 생성 시간 설정.
-     * */
+     */
     public Reply setAddDate(LocalDateTime localDateTime) {
-        this.addDate = this.formattedLocalDateTime(localDateTime);
+        this.addDate = LocalDateTimeFormatter.format(localDateTime);
         this.setLastModifyDate(localDateTime);
         return this;
     }
 
-    public String getAddDate() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(this.addDate);
-    }
-
     /**
      * 최종 수정 시간 설정. 클래스 외부, 내부 모두 사용됨
-     * */
+     */
     public Reply setLastModifyDate(LocalDateTime localDateTime) {
-        this.lastModifyDate = this.formattedLocalDateTime(localDateTime);
+        this.lastModifyDate = LocalDateTimeFormatter.format(localDateTime);
         return this;
     }
 
-    public String getLastModifyDate() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(this.lastModifyDate);
-    }
-
-    /**
-     * {@link LocalDateTime}의 포맷을 yyyy-MM-dd HH:mm:ss 형태로 변경
-     * */
-    private LocalDateTime formattedLocalDateTime(LocalDateTime unFormattedLocalDateTime) {
-        return LocalDateTime.parse(
-                unFormattedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                , DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        );
-    }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
  * {@link org.springframework.data.domain.PageRequest}를 커스터마이징하는 클래스
  */
 public class CustomPageRequest {
-
+    public static final String sortProperty = "addDate"; // 정렬 시 기준이 되는 필드명 이름
     private int page;
     private int size;
 
@@ -45,7 +45,6 @@ public class CustomPageRequest {
      * 쿼리 시 페이징을 위한 객체를 리턴
      */
     public PageRequest of() {
-        String[] properties = { "addDate" }; // 정렬 시 기준이 되는 필드명 리스트
-        return PageRequest.of(page - 1, size, direction, properties);
+        return PageRequest.of(page - 1, size, direction, sortProperty);
     }
 }

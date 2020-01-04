@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+import teemoDevs.MainWebApplication.util.LocalDateTimeFormatter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,8 +14,9 @@ import java.util.List;
 
 /**
  * 커뮤니티 게시글 Model
+ *
  * @author yechanpark
- * */
+ */
 @Entity
 @Getter
 @Setter
@@ -43,33 +45,22 @@ public class Board {
      * {@link CascadeType.REMOVE} : Board 삭제 시 Reply도 같이 삭제
      * {@link CascadeType.MERGE} : Board 업데이트 시 Reply도 같이 업데이트
      */
-    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(
+            mappedBy = "board",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
+    )
     @JsonManagedReference
     private List<Reply> replyList = new ArrayList<>();
 
     public Board setAddDate(LocalDateTime localDateTime) {
-        this.addDate = this.formattedLocalDateTime(localDateTime);
+        this.addDate = LocalDateTimeFormatter.format(localDateTime);
         this.setLastModifyDate(localDateTime);
         return this;
     }
 
-    public String getAddDate() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(this.addDate);
-    }
-
     public Board setLastModifyDate(LocalDateTime localDateTime) {
-        this.lastModifyDate = this.formattedLocalDateTime(localDateTime);
+        this.lastModifyDate = LocalDateTimeFormatter.format(localDateTime);
         return this;
     }
 
-    public String getLastModifyDate() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(this.lastModifyDate);
-    }
-
-    private LocalDateTime formattedLocalDateTime(LocalDateTime unFormattedLocalDateTime) {
-        return LocalDateTime.parse(
-                unFormattedLocalDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                , DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        );
-    }
 }

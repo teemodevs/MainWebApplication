@@ -33,7 +33,7 @@ public class CommunityController {
      * 자유게시판 이동
      * */
     @GetMapping("")
-    public String communityFreeBoard(Model model, @PageableDefault(size = 5, page = 1, sort = "addDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String communityFreeBoard(Model model, @PageableDefault(size = 5, page = 1, sort = CustomPageRequest.sortProperty, direction = Sort.Direction.DESC) Pageable pageable) {
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
 
