@@ -21,10 +21,4 @@ public class AboutController {
         return VIEW_PATH + "projects/home";
     }
 
-    /** Developers 홈 **/
-    @GetMapping("/developers")
-    public String aboutDevelopers() {
-        return VIEW_PATH + "developers/home";
-    }
-
 }
