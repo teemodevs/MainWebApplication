@@ -16,6 +16,10 @@ import teemoDevs.MainWebApplication.web.community.service.BoardService;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+/**
+ * 커뮤니티 웹 컨트롤러
+ * @author yechanpark
+ * */
 @Controller
 @RequestMapping("/community")
 public class CommunityController {
@@ -26,7 +30,7 @@ public class CommunityController {
     private BoardService boardService;
 
     /**
-     * 자유게시판
+     * 자유게시판 이동
      * */
     @GetMapping("")
     public String communityFreeBoard(Model model, @PageableDefault(size = 5, page = 1, sort = "addDate", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -47,7 +51,7 @@ public class CommunityController {
     }
 
     /**
-     * 게시글 추가 폼 입력 페이지 이동
+     * 자유게시판 게시글 추가 입력 폼 이동
      * */
     @GetMapping("/freeBoard/board/add")
     public String addBoard(Model model, Authentication authentication) {

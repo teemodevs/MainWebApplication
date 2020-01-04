@@ -3,6 +3,10 @@ package teemoDevs.MainWebApplication.web.home;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * 홈페이지 웹 컨트롤러
+ * @author yechanpark
+ */
 @Controller
 public class HomeController {
 

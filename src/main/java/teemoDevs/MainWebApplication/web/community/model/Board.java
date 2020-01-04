@@ -11,6 +11,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 커뮤니티 게시글 Model
+ * @author yechanpark
+ * */
 @Entity
 @Getter
 @Setter
