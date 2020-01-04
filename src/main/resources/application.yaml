@@ -20,7 +20,9 @@ spring:
     database-platform: H2
     show-sql: TRUE
     properties:
-      hibernate.format_sql: true
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
     hibernate:
       ddl-auto: 'create'
 
