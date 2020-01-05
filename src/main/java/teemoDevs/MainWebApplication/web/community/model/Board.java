@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
-import teemoDevs.MainWebApplication.util.LocalDateTimeFormatter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,13 +51,13 @@ public class Board {
     private List<Reply> replyList = new ArrayList<>();
 
     public Board setAddDate(LocalDateTime localDateTime) {
-        this.addDate = LocalDateTimeFormatter.format(localDateTime);
+        this.addDate = localDateTime;
         this.setLastModifyDate(localDateTime);
         return this;
     }
 
     public Board setLastModifyDate(LocalDateTime localDateTime) {
-        this.lastModifyDate = LocalDateTimeFormatter.format(localDateTime);
+        this.lastModifyDate = localDateTime;
         return this;
     }
 

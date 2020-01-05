@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
-import teemoDevs.MainWebApplication.util.LocalDateTimeFormatter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -57,7 +56,7 @@ public class Reply {
      * 최초 생성 시간 설정.
      */
     public Reply setAddDate(LocalDateTime localDateTime) {
-        this.addDate = LocalDateTimeFormatter.format(localDateTime);
+        this.addDate = localDateTime;
         this.setLastModifyDate(localDateTime);
         return this;
     }
@@ -66,7 +65,7 @@ public class Reply {
      * 최종 수정 시간 설정. 클래스 외부, 내부 모두 사용됨
      */
     public Reply setLastModifyDate(LocalDateTime localDateTime) {
-        this.lastModifyDate = LocalDateTimeFormatter.format(localDateTime);
+        this.lastModifyDate = localDateTime;
         return this;
     }
 
