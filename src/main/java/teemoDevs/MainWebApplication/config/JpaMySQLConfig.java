@@ -21,7 +21,8 @@ import java.util.Properties;
 /**
  * MySQL DB를 사용하는 JpaRepository에 대한 설정
  * MultipleDataSource를 사용하려면 JavaConfig을 사용해야 함
- */
+ *
+ * TODO : 개발환경에서만 사용하도록 변경 : Heroku에 MySQL이 없음음 */
 @Configuration                  // 설정 클래스로 지정
 @EnableTransactionManagement    // 트랜잭션 사용 설정
 @EnableJpaRepositories(         // JpaRepository를 사용하도록 설정

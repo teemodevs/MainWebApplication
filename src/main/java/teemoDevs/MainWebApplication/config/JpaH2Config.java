@@ -22,6 +22,8 @@ import java.util.Properties;
 /**
  * H2 DB를 사용하는 JpaRepository에 대한 설정
  * MultipleDataSource를 사용하려면 JavaConfig을 사용해야 함
+ *
+ * TODO : 개발, 상용환경(Heroku)에서 사용하도록 변경
  */
 @Configuration
 @EnableTransactionManagement
