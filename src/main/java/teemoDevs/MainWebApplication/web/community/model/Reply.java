@@ -21,7 +21,7 @@ public class Reply {
 
     private String author;  // 작성한 유저 이름
 
-    @Column(length = 40000)
+    @Column(columnDefinition = "TEXT")
     private String content; // 댓글 내용
 
     private LocalDateTime addDate;        // 작성시간
@@ -47,7 +47,8 @@ public class Reply {
     // 자식 댓글 리스트
     @OneToMany(
             mappedBy = "parent",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+            cascade = { CascadeType.PERSIST, CascadeType.REMOVE },
+            fetch = FetchType.EAGER
     )
     @JsonManagedReference
     private List<Reply> children = new ArrayList<>();

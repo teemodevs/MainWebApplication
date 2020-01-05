@@ -9,9 +9,9 @@ import teemoDevs.MainWebApplication.web.community.model.Board;
 
 /**
  * {@link JpaRepository}는 {@link PagingAndSortingRepository} 인터페이스를 상속받는다.
- * MySQL DB를 사용할 때는 이 인터페이스를 사용한다.
+ * H2 DB를 사용할 때는 이 인터페이스를 사용한다.
  */
 @Repository
-public interface BoardRepository extends JpaRepository<Board, Integer> {
+public interface H2BoardRepository extends JpaRepository<Board, Integer> {
     Page<Board> findAll(Pageable pageable);
 }

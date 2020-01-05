@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import teemoDevs.MainWebApplication.web.community.model.Board;
 import teemoDevs.MainWebApplication.web.community.model.CustomPageRequest;
 import teemoDevs.MainWebApplication.web.community.model.Reply;
+import teemoDevs.MainWebApplication.web.community.repository.H2BoardRepository;
 import teemoDevs.MainWebApplication.web.community.service.BoardService;
 
 import java.security.Principal;
@@ -27,7 +28,10 @@ public class CommunityController {
     private final static String VIEW_PATH = "content/community/";
 
     @Autowired
-    private BoardService boardService;
+    private BoardService boardService; // MySQL을 사용한 BoardService
+
+    @Autowired
+    private H2BoardRepository h2BoardService; // H2 DB를 사용한 BoardService
 
     /**
      * 자유게시판 이동
@@ -136,12 +140,31 @@ public class CommunityController {
         board.setAuthor(principal.getName());
 
         boardService.save(board);
+
+
+        // Multiple DataSource Test
+        Board subBoard = new Board();
+        subBoard.setAddDate(LocalDateTime.now());
+        subBoard.setAuthor("sub author");
+        subBoard.setContent("sub content");
+        subBoard.setSubject("sub subject");
+
+        Reply subReply1 = new Reply();
+        subReply1.setBoard(subBoard);
+        subReply1.setAuthor("sub reply1 author");
+        subReply1.setContent("sub reply1 content");
+        subReply1.setAddDate(LocalDateTime.now());
+
+        subBoard.getReplyList().add(subReply1);
+
+        h2BoardService.save(subBoard);
+
         return "redirect:/community";
     }
 
     /**
      * 게시글에 추가할 최상위 부모 댓글 추가
-     * */
+     */
     @PostMapping("/freeBoard/reply/add")
     public String addReplyPost(
             @RequestParam(value = "board.id") Board board,

@@ -27,9 +27,21 @@ public class Board {
     private String subject; // 제목
     private String author;  // 작성자
 
-    @Column(length = 100000)
+    /**
+     * Java에서 String 타입 저장 시 DB에 저장되는 필드의 타입
+     * Default : MySQL - VARCHAR(255), H2 - VARCHAR(255)
+     * {@link Lob} : MySQL - Longtext,  H2 - CLOB
+     * {@link Column}(columnDefinition = "text") : MySQL - TEXT, H2 : TEXT
+     *
+     * 더 큰 문자열을 저장하려면 Annotation을 사용해 별도의 타입을 지정해야 함
+     */
+    @Column(columnDefinition = "TEXT") // 또는 @Lob
     private String content; // 내용
 
+    /**
+     * Java에서 LocalDateTime 타입 저장 시 DB에 저장되는 필드의 타입
+     * Default : MySQL - datetime(6), H2 - TIMESTAMP
+     */
     private LocalDateTime addDate;        // 작성시간
     private LocalDateTime lastModifyDate; // 최종 수정 시간
 
@@ -45,7 +57,8 @@ public class Board {
      */
     @OneToMany(
             mappedBy = "board",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
+            cascade = { CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE },
+            fetch = FetchType.EAGER
     )
     @JsonManagedReference
     private List<Reply> replyList = new ArrayList<>();
